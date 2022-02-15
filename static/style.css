@@ -2,7 +2,7 @@ body {
   color: midnightblue;
 }
 
-input[type=submit], .button {
+input[type=submit], button {
   background-color: #4CAF50;
   border-radius: 12px;
   color: white;

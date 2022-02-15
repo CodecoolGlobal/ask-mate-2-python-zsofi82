@@ -16,7 +16,8 @@ def hello():
 def display_questions():
     data_file = data_manager.question_file_path
     questions = connection.get_data_from_csv(data_file)
-    return render_template("list_questions.html", questions=questions, headers=data_manager.question_headers)
+    rev_questions = reversed(questions)  # To sort the questions by most recent.
+    return render_template("list_questions.html", questions=rev_questions, headers=data_manager.question_headers)
 
 
 @app.route("/question/<question_id>", methods=["GET", "POST"])
@@ -36,7 +37,17 @@ def display_a_question_with_answers(question_id):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def add_question():
-    return render_template('add_question.html')
+    if request.method == "POST":
+        question_csv_file = data_manager.question_file_path
+        questions = connection.get_data_from_csv(question_csv_file)
+        question = {}
+        for key in data_manager.QUESTION_HEADER:
+            question[key] = request.form.get(key)
+        question["id"] = data_manager.create_new_id(questions)
+        connection.write_data_to_csv(csvfile=question_csv_file, new_data_dict=question, given_list=questions, data_header=data_manager.QUESTION_HEADER)
+        return redirect('list')
+    else:
+        return render_template('add_question.html')
 
 
 # @app.route("/question/<question_id>/new-answer")
