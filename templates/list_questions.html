@@ -21,7 +21,7 @@
                 {% for key,value in question_dict.items() %}
                     {% if key == "title" %}
                         <td>
-                        <a id="title" href="{{ url_for("update_given_question", question_id=question_dict["id"]) }}">{{ value }}</a>
+                        <a id="title" href="{{ url_for("display_given_question", question_id=question_dict["id"]) }}">{{ value }}</a>
                         </td>
                     {% elif value == "image" %}
                         <td><img src="/static/images/{{ value }}" height="45"></td>

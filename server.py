@@ -21,13 +21,13 @@ def display_questions():
 
 
 @app.route("/question/<int:question_id>", methods=["GET", "POST"])
-def update_given_question(question_id):
+def display_given_question(question_id):
     if request.method == "GET":
         questions = connection.get_data_from_csv(data_manager.question_file_path)
         question_id = int(question_id)-1
         question_to_display = questions[question_id]
         answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
-        return render_template("update_question.html", question_id=question_id, question=question_to_display, answers=answers_to_a_question)
+        return render_template("display_question.html", question_id=question_id, question=question_to_display, answers=answers_to_a_question)
     else:
         return redirect("/list")
 
@@ -59,6 +59,7 @@ def add_question():
 
 @app.route("/question/<int:question_id>/edit")
 def edit_a_question(question_id):
+    # question_id + 1-et hozzá kell adni vhol majd
     pass
 
 

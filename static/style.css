@@ -2,7 +2,7 @@ body {
   color: midnightblue;
 }
 
-input[type=submit], button {
+input[type=submit], .button, button {
   background-color: #4CAF50;
   border-radius: 12px;
   color: white;
@@ -15,16 +15,16 @@ input[type=submit], button {
   cursor: pointer;
 }
 
-#a {
+#title {
   color: dodgerblue;
 }
 
-#a:visited {
+#title:visited {
   color: forestgreen;
 }
 
-#a:hover {
-  color: hotpink;
+#title:hover {
+  color: red;
 }
 
 table {
