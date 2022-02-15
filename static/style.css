@@ -15,8 +15,16 @@ input[type=submit], button {
   cursor: pointer;
 }
 
-a {
-  font-size: 20px;
+#a {
+  color: dodgerblue;
+}
+
+#a:visited {
+  color: forestgreen;
+}
+
+#a:hover {
+  color: hotpink;
 }
 
 table {

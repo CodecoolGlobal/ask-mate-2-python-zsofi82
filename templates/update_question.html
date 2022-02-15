@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update question</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Update this question!</h1>
+    <form action="{{ url_for('update_given_question', question_id=question_id) }}" method="POST">
+        <label for="title">Title:</label><br>
+        <input name="title" type="text" size="5" value="{{ question['title']}}" required>
+        <br><br>
+        <label for="message">Details:</label>
+        <textarea name="message" rows="4" cols="60" required>{{ question['message']}}</textarea>
+        <br><br>
+        <label for="answers">Answers:</label><br>
+        <ol>
+            {% for answer in answers %}
+                <li>{{ answer["message"] }}</li>
+            {% endfor %}
+        </ol>
+        <br><br>
+        <button type="submit" value="Update User Story">Update User Story</button>
+    </form>
+</body>

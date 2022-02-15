@@ -20,19 +20,16 @@ def display_questions():
     return render_template("list_questions.html", questions=rev_questions, headers=data_manager.question_headers)
 
 
-@app.route("/question/<question_id>", methods=["GET", "POST"])
-def display_a_question_with_answers(question_id):
-    # if request.method == "GET":
-    #     questions = connection.get_data_from_csv(data_manager.question_file_path)
-    #     question_to_display = questions[question_id]
-    #     answers_to_a_question = data_manager.get_answers_to_a_question
-    #     answers = connection.get_data_from_csv(data_file)
-    #     actual_answers = []
-    #     for answer in answers:
-    #         if str(question_id) == answer["question_id"]:
-    #             actual_answers.append(answer)
-    # return render_template("display_question.html", question=question_to_display, actual_answers=actual_answers)
-    pass
+@app.route("/question/<int:question_id>", methods=["GET", "POST"])
+def update_given_question(question_id):
+    if request.method == "GET":
+        questions = connection.get_data_from_csv(data_manager.question_file_path)
+        question_id = int(question_id)-1
+        question_to_display = questions[question_id]
+        answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
+        return render_template("update_question.html", question_id=question_id, question=question_to_display, answers=answers_to_a_question)
+    else:
+        return redirect("/list")
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -58,24 +55,24 @@ def add_question():
 # @app.route("/question/<question_id>/delete")
 # def delete_question():
 #     pass
-#
-#
-# @app.route("/question/<question_id>/edit")
-# def edit_a_question():
-#     pass
-#
-#
-# @app.route("/answer/<answer_id>/delete")
+
+
+@app.route("/question/<int:question_id>/edit")
+def edit_a_question(question_id):
+    pass
+
+
+# @app.route("/answer/<int:answer_id>/delete")
 # def delete_an_answer():
 #     pass
 
 
-# @app.route("/question/<question_id>/vote")
+# @app.route("/question/<int:question_id>/vote")
 # def vote_on_questions():
 #     pass
 
 
-# @app.route("/answer/<answer_id>/vote")
+# @app.route("/answer/<int:answer_id>/vote")
 # def vote_on_answers():
 #     pass
 

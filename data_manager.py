@@ -10,11 +10,12 @@ answer_headers = ["Id", "Submission time", "Vote number", "Question ID", "Messag
 
 
 def get_answers_to_a_question(question_id):
-    answers = connection.get_data_from_csv("sample_data/answer.csv")
-    answers_to_questions = []
+    answers = connection.get_data_from_csv(answer_file_path)
+    answers_to_a_question = []
     for answer in answers:
-        if int(answer[id]) == question_id:
-            answers_to_questions.append(answer)
+        if int(answer["question_id"]) == question_id + 1:
+            answers_to_a_question.append(answer)
+    return answers_to_a_question
 
 
 def get_all_ids(given_list):
