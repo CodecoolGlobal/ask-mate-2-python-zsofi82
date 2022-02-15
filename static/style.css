@@ -1,0 +1,27 @@
+body {
+  color: midnightblue;
+}
+
+input[type=submit], .button {
+  background-color: #4CAF50;
+  border-radius: 12px;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 18px;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+
+a {
+  font-size: 20px;
+}
+
+table {
+  display: table;
+  font-size: 16px;
+  border-collapse: separate;
+  border-spacing: 10px;
+}
