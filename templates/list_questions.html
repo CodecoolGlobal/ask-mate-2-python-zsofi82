@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List questions</title>
+</head>
+<body>
+    <h1>Questions</h1>
+    <script src="sample_data/question.csv" type="text/css">
+    </script>
+    <table>
+        <thead>
+            <tr>
+                {% for header in question_headers %}
+                <th>{{ header }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for question_dict in questions %}
+                <tr>
+                {% for key,value in question_dict.items() %}
+                    <td>{{ value }}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
