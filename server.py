@@ -2,7 +2,6 @@ from flask import Flask, render_template, redirect, request, url_for
 import data_manager
 import connection
 
-
 app = Flask(__name__)
 
 
@@ -35,7 +34,7 @@ def display_a_question_with_answers(question_id):
 
 
 @app.route("/add-question", methods=["GET", "POST"])
-def add_a_question():
+def add_question():
     pass
 
 
