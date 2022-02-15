@@ -35,8 +35,8 @@ def display_a_question_with_answers(question_id):
 
 
 @app.route("/add-question", methods=["GET", "POST"])
-def add_a_question():
-    pass
+def add_question():
+    return render_template('add_question.html')
 
 
 # @app.route("/question/<question_id>/new-answer")
