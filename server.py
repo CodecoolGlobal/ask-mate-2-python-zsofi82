@@ -1,4 +1,5 @@
 from flask import Flask, render_template, redirect, request, url_for
+from http import HTTPStatus
 import data_manager
 import connection
 
@@ -48,24 +49,36 @@ def add_question():
 # @app.route("/question/<question_id>/new-answer")
 # def post_an_answer():
 #     pass
-#
-#
-# @app.route("/question/<question_id>/delete")
-# def delete_question():
-#     pass
+
+
+@app.route("/question/<question_id>/delete")
+def delete_question(question_id: int):
+    pass
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_a_question(question_id: int):
-    if request.method == "POST":
-        update_given_question = {}
-        for key in data_manager.QUESTION_HEADER:
-            update_given_question[key] = request.form.get(key)
-        update_given_question["id"] = question_id
-        connection.write_data_to_csv()
-        return render_template("display_question.html", question_id=question_id, question=update_given_question)
-    else:
-        return redirect(request.url)
+    question_csv_file = data_manager.question_file_path
+    questions = connection.get_data_from_csv(question_csv_file)
+    updated_question = {}
+    try:
+        if request.method == "GET":
+            for question in questions:
+                if int(question["id"]) == question_id:
+                    return render_template("update_question.html", question_id=question_id, question=question)
+        elif request.method == "POST":
+            for key in data_manager.QUESTION_HEADER:
+                updated_question[key] = request.form.get(key)
+            updated_question["id"] = question_id
+            connection.update_data_in_csv(csvfile=question_csv_file, updated_data=updated_question, given_list=questions, data_header=data_manager.QUESTION_HEADER)
+            return render_template("display_question.html", question_id=question_id, question=updated_question)
+        else:
+            # abort(HTTPStatus.METHOD_NOT_ALLOWED)
+            return None
+    except NameError:
+        print("An exception occurred!")
+    # except Exception as e:
+    #     return render_template('error.html', message=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
 # @app.route("/answer/<int:answer_id>/delete")
