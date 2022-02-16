@@ -1,9 +1,27 @@
 body {
+  font-family: fantasy;
   color: midnightblue;
+  /*background-image: url('/static/images/background.png');*/
+}
+
+h2, a {
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.openPage{
+  background-color: darkred;
+}
+
+#openPage{
+  background-color: white;
 }
 
 input[type=submit], .button, button {
-  background-color: #4CAF50;
+  background-color: darkred;
   border-radius: 12px;
   color: white;
   padding: 10px 20px;
@@ -16,15 +34,11 @@ input[type=submit], .button, button {
 }
 
 #title {
-  color: dodgerblue;
-}
-
-#title:visited {
-  color: forestgreen;
+  color: midnightblue;
 }
 
 #title:hover {
-  color: red;
+  color: darkred;
 }
 
 table {
@@ -33,3 +47,13 @@ table {
   border-collapse: separate;
   border-spacing: 10px;
 }
+
+thead {
+  text-transform: uppercase;
+  background-color: dimgrey;
+  color: white;
+}
+
+/*tr:hover {
+  background-color: dimgrey;
+}*/
