@@ -1,5 +1,4 @@
 from flask import Flask, render_template, redirect, request, url_for
-from http import HTTPStatus
 import data_manager
 import connection
 
@@ -54,6 +53,15 @@ def add_question():
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id: int):
     pass
+@app.route("/question/<int:question_id>/new-answer")
+def post_an_answer(question_id: int):
+    #return render_template('post_answer.html'
+    pass
+
+
+# @app.route("/question/<question_id>/delete")
+# def delete_question():
+#     pass
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
@@ -97,4 +105,4 @@ def edit_a_question(question_id: int):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
