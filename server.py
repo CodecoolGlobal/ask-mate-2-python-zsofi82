@@ -2,7 +2,6 @@ from flask import Flask, render_template, redirect, request, url_for
 import data_manager
 import connection
 
-
 app = Flask(__name__)
 
 
@@ -11,8 +10,7 @@ def hello():
     return render_template("open_page.html")
 
 
-# missing: The questions are sorted by most recent.
-@app.route("/list", methods=["GET", "POST"])
+@app.route("/list", methods=["GET"])
 def display_questions():
     data_file = data_manager.question_file_path
     questions = connection.get_data_from_csv(data_file)
@@ -20,7 +18,7 @@ def display_questions():
     return render_template("list_questions.html", questions=rev_questions, headers=data_manager.question_headers)
 
 
-@app.route("/question/<int:question_id>", methods=["GET", "POST"])
+@app.route("/question/<int:question_id>", methods=["GET"])
 def display_given_question(question_id: int):
     if request.method == "GET":
         question_to_display = data_manager.get_a_question(question_id)
@@ -39,29 +37,28 @@ def add_question():
         for key in data_manager.QUESTION_HEADER:
             question[key] = request.form.get(key)
         question["id"] = data_manager.create_new_id(questions)
-        connection.write_data_to_csv(csvfile=question_csv_file, new_data_dict=question, given_list=questions, data_header=data_manager.QUESTION_HEADER)
+        questions.append(question)
+        connection.write_data_to_csv(csvfile=question_csv_file, given_list=questions, data_header=data_manager.QUESTION_HEADER)
         return redirect('list')
     else:
         return render_template('add_question.html')
 
 
-# @app.route("/question/<question_id>/new-answer")
-# def post_an_answer():
-#     pass
-
-
-@app.route("/question/<question_id>/delete")
-def delete_question(question_id: int):
-    pass
-@app.route("/question/<int:question_id>/new-answer")
+@app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id: int):
     #return render_template('post_answer.html'
     pass
 
 
-# @app.route("/question/<question_id>/delete")
-# def delete_question():
-#     pass
+@app.route("/question/<question_id>/delete")
+def delete_question(question_id: int):
+    question_csv_file = data_manager.question_file_path
+    questions = connection.get_data_from_csv(question_csv_file)
+    answer_csv_file = data_manager.answer_file_path
+    answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
+    connection.delete_from_csv(csv_file=question_csv_file, question_id=question_id, given_list=questions)
+    connection.delete_from_csv(csv_file=answer_csv_file, question_id=question_id, given_list=answers_to_a_question)
+    return redirect("/list")
 
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])

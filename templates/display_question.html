@@ -15,7 +15,9 @@
         <br>
         <textarea name="message" rows="4" cols="60" readonly>{{ question['message']}}</textarea>
         <br><br>
+    </form>
         <a href="{{ url_for('edit_a_question', question_id=question_id) }}" class="button"><strong>Update question</strong></a>
+        <a href="{{ url_for('delete_question', question_id=question_id) }}" class="button"><strong>Delete question</strong></a>
         <br><br>
         <label for="answers">Answers:</label><br>
         <ol>
@@ -23,7 +25,6 @@
                 <li>{{ answer["message"] }}</li>
             {% endfor %}
         </ol>
-    </form>
         <a href="{{ url_for('post_an_answer', question_id=question_id) }}" class="button"><strong>Comment</strong></a>
 </body>
 </html>
