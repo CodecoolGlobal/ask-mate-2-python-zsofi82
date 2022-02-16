@@ -21,11 +21,9 @@ def display_questions():
 
 
 @app.route("/question/<int:question_id>", methods=["GET", "POST"])
-def display_given_question(question_id):
+def display_given_question(question_id: int):
     if request.method == "GET":
-        questions = connection.get_data_from_csv(data_manager.question_file_path)
-        question_id = int(question_id)-1
-        question_to_display = questions[question_id]
+        question_to_display = data_manager.get_a_question(question_id)
         answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
         return render_template("display_question.html", question_id=question_id, question=question_to_display, answers=answers_to_a_question)
     else:
@@ -57,10 +55,17 @@ def add_question():
 #     pass
 
 
-@app.route("/question/<int:question_id>/edit")
-def edit_a_question(question_id):
-    # question_id + 1-et hozzá kell adni vhol majd
-    pass
+@app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
+def edit_a_question(question_id: int):
+    if request.method == "POST":
+        update_given_question = {}
+        for key in data_manager.QUESTION_HEADER:
+            update_given_question[key] = request.form.get(key)
+        update_given_question["id"] = question_id
+        connection.write_data_to_csv()
+        return render_template("display_question.html", question_id=question_id, question=update_given_question)
+    else:
+        return redirect(request.url)
 
 
 # @app.route("/answer/<int:answer_id>/delete")

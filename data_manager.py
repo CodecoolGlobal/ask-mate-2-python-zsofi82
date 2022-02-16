@@ -13,9 +13,16 @@ def get_answers_to_a_question(question_id):
     answers = connection.get_data_from_csv(answer_file_path)
     answers_to_a_question = []
     for answer in answers:
-        if int(answer["question_id"]) == question_id + 1:
+        if int(answer["question_id"]) == question_id:
             answers_to_a_question.append(answer)
     return answers_to_a_question
+
+
+def get_a_question(question_id):
+    questions = connection.get_data_from_csv(question_file_path)
+    for question in questions:
+        if int(question["id"]) == question_id:
+            return question
 
 
 def get_all_ids(given_list):

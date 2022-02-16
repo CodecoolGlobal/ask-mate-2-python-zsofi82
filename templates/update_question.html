@@ -15,13 +15,6 @@
         <br>
         <textarea name="message" rows="4" cols="60" required>{{ question['message']}}</textarea>
         <br><br>
-        <label for="answers">Answers:</label><br>
-        <ol>
-            {% for answer in answers %}
-                <li>{{ answer["message"] }}</li>
-            {% endfor %}
-        </ol>
-        <br><br>
         <button type="submit" value="Update User Story">Update User Story</button>
     </form>
 </body>
