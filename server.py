@@ -45,11 +45,12 @@ def add_question():
         return render_template('add_question.html')
 
 
-# @app.route("/question/<question_id>/new-answer")
-# def post_an_answer():
-#     pass
-#
-#
+@app.route("/question/<int:question_id>/new-answer")
+def post_an_answer(question_id: int):
+    #return render_template('post_answer.html'
+    pass
+
+
 # @app.route("/question/<question_id>/delete")
 # def delete_question():
 #     pass
@@ -84,4 +85,4 @@ def edit_a_question(question_id: int):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)
