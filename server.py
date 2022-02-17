@@ -1,4 +1,6 @@
-from flask import Flask, render_template, redirect, request, url_for
+from http import HTTPStatus
+
+from flask import Flask, render_template, redirect, request, url_for, abort
 import data_manager
 import connection
 
@@ -46,7 +48,7 @@ def add_question():
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id: int):
-    #return render_template('post_answer.html'
+    #  return render_template('post_answer.html'
     pass
 
 
@@ -56,8 +58,8 @@ def delete_question(question_id: int):
     questions = connection.get_data_from_csv(question_csv_file)
     answer_csv_file = data_manager.answer_file_path
     answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
-    connection.delete_from_csv(csv_file=question_csv_file, question_id=question_id, given_list=questions)
-    connection.delete_from_csv(csv_file=answer_csv_file, question_id=question_id, given_list=answers_to_a_question)
+    connection.delete_from_csv(csv_file=question_csv_file, given_id=question_id, given_list=questions, header=data_manager.QUESTION_HEADER)
+    connection.delete_from_csv(csv_file=answer_csv_file, given_id=question_id, given_list=answers_to_a_question, header=data_manager.ANSWER_HEADER)
     return redirect("/list")
 
 
@@ -78,17 +80,22 @@ def edit_a_question(question_id: int):
             connection.update_data_in_csv(csvfile=question_csv_file, updated_data=updated_question, given_list=questions, data_header=data_manager.QUESTION_HEADER)
             return render_template("display_question.html", question_id=question_id, question=updated_question)
         else:
-            # abort(HTTPStatus.METHOD_NOT_ALLOWED)
+            abort(HTTPStatus.METHOD_NOT_ALLOWED)
             return None
-    except NameError:
-        print("An exception occurred!")
-    # except Exception as e:
-    #     return render_template('error.html', message=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
+    except Exception as e:
+        return render_template('error.html', question_id=question_id), HTTPStatus.INTERNAL_SERVER_ERROR
 
 
-# @app.route("/answer/<int:answer_id>/delete")
-# def delete_an_answer():
-#     pass
+@app.route("/answer/<int:answer_id>/delete")
+def delete_an_answer(answer_id: int):
+    answer_csv_file = data_manager.answer_file_path
+    answers = connection.get_data_from_csv(answer_csv_file)
+    question_id = 0
+    for answer in answers:
+        if int(answer["id"]) == answer_id:
+            question_id = int(answer["question_id"])
+    connection.delete_from_csv(csv_file=answer_csv_file, given_id=answer_id, given_list=answers, header=data_manager.ANSWER_HEADER)
+    return redirect(f"/question/{question_id}")
 
 
 # @app.route("/question/<int:question_id>/vote")

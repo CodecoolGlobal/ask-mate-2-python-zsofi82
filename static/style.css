@@ -12,12 +12,16 @@ h2, a {
   display: inline-block;
 }
 
-.openPage{
+.openPage {
   background-color: darkred;
 }
 
-#openPage{
+#openPage {
   background-color: white;
+}
+
+#deleteAnswer {
+  font-size: smaller;
 }
 
 input[type=submit], .button, button {
