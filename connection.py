@@ -27,12 +27,12 @@ def update_data_in_csv(csvfile, updated_data, given_list, data_header):
     write_data_to_csv(csvfile, given_list, data_header)
 
 
-def delete_from_csv(csv_file, question_id, given_list):
+def delete_from_csv(csv_file, given_id, given_list, header):
     new_list = []
     for data_dict in given_list:
-        if data_dict["id"] != question_id:
+        if int(data_dict["id"]) != given_id:
             new_list.append(data_dict)
-    write_data_to_csv(csv_file, new_list, data_manager.QUESTION_HEADER)
+    write_data_to_csv(csv_file, new_list, header)
     return new_list
 
 #
