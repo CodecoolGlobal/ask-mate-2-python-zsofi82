@@ -26,7 +26,7 @@ def get_a_question(question_id):
 
 
 def get_all_ids(given_list):
-    all_ids = []
+    all_ids = [0]
     for given_list_dict in given_list:
         for key, value in given_list_dict.items():
             if key == "id":

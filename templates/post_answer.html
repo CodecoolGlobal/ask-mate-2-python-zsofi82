@@ -6,5 +6,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <textarea></textarea>
+    <h1>Shoot your solution!</h1>
+    <form action="{{url_for('post_an_answer', question_id=question_id)}}" method="POST">
+        <textarea name="message" rows="4" cols="60"></textarea>
+        <button type="submit">Shoot</button>
+    </form>
 </body>
+</html>

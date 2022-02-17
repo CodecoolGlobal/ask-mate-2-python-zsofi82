@@ -46,8 +46,19 @@ def add_question():
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id: int):
-    #return render_template('post_answer.html'
-    pass
+    answer_csv_file_path = data_manager.answer_file_path
+    answers = connection.get_data_from_csv(answer_csv_file_path)
+    if request.method == "POST":
+        new_answer = {}
+        for key in data_manager.ANSWER_HEADER:
+            new_answer[key] = request.form.get(key)
+        new_answer['id'] = data_manager.create_new_id(answers)
+        new_answer['question_id'] = question_id
+        answers.append(new_answer)
+        connection.write_data_to_csv(csvfile=answer_csv_file_path, given_list=answers, data_header=data_manager.ANSWER_HEADER)
+        return redirect(url_for('display_given_question', question_id=question_id))
+    else:
+        return render_template('post_answer.html', question_id=question_id)
 
 
 @app.route("/question/<question_id>/delete")
