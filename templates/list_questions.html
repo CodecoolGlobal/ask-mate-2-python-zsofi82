@@ -11,7 +11,11 @@
         <thead>
             <tr>
                 {% for header in headers %}
-                <th>{{ header }}</th>
+                <th>{{ header }}
+                    <br>
+                    <a class="sort_button" href="localhost:5000/shows?order=asc&order={{ header }}"><span style='font-size:10px;'>&#8911;</span></a>
+                    <a class="sort_button" href="localhost:5000/shows?order=desc&order={{ header }}"><span style='font-size:10px;'>&#8910;</span></a>
+                </th>
                 {% endfor %}
             </tr>
         </thead>

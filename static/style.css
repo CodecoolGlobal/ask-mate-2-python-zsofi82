@@ -38,11 +38,20 @@ input[type=submit], .button, button {
 }
 
 #title {
-  color: midnightblue;
+  color: dimgrey;
+  text-decoration: underline;
 }
 
 #title:hover {
   color: darkred;
+  text-decoration: none;
+}
+
+.sort_button {
+  color: white;
+  background: darkred;
+  padding: 2px;
+  border-radius: 12px;
 }
 
 table {
@@ -56,6 +65,11 @@ thead {
   text-transform: uppercase;
   background-color: dimgrey;
   color: white;
+}
+
+th {
+  min-width: 50px;
+  padding: 5px 10px;
 }
 
 /*tr:hover {

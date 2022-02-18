@@ -12,5 +12,7 @@ app.js (bundled file with webpack, including jquery)",images/image1.png
 3,,,,Drawing canvas with an image picked with Cordova Camera Plugin,"I'm getting an image from device and drawing a canvas with filters using Pixi JS. It works all well using computer to get an image. But when I'm on IOS, it throws errors such as cross origin issue, or that I'm trying to use an unknown format.
 
 This is the code I'm using to draw the image (that works on web/desktop but not cordova built ios app)...",
-5,,,,The super granny,Do you remember tha old granny who could even fly...,
+5,,,,The super granny,Do you remember the old granny who could even fly...,
 6,,,,Kenyér,vajon fehér e az őrölt kenyér?,
+7,none,none,none,The rainmaker,There was a film with a young boy and a man who known how to make rain. This movie was shot in the 80s maybe.,none
+8,,,,parar,parara,

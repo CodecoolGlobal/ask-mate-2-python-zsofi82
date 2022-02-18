@@ -1,5 +1,10 @@
 import os
 import connection
+from datetime import datetime, timedelta
+import time
+
+dtime = datetime.now() + timedelta(seconds=3)
+unixtime = time.mktime(dtime.timetuple())
 
 question_file_path = os.getenv('question_file_path') if 'question_file_path' in os.environ else os.path.dirname(os.path.abspath(__file__))+'/sample_data/question.csv'
 QUESTION_HEADER = ["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]

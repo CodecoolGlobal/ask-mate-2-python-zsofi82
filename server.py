@@ -32,6 +32,8 @@ def display_given_question(question_id: int):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def add_question():
+    question_csv_file = data_manager.question_file_path
+    questions = connection.get_data_from_csv(question_csv_file)
     if request.method == "POST":
         question_csv_file = data_manager.question_file_path
         questions = connection.get_data_from_csv(question_csv_file)
@@ -43,7 +45,20 @@ def add_question():
         connection.write_data_to_csv(csvfile=question_csv_file, given_list=questions, data_header=data_manager.QUESTION_HEADER)
         return redirect('list')
     else:
-        return render_template('add_question.html')
+        id_list = data_manager.get_all_ids(questions)
+        question_id = int(max(id_list))
+        #  submission_time
+        #  view_number
+        #  vote_number
+        #  image
+        return render_template('add_question.html', id=question_id)
+
+
+# Not working yet
+@app.route("/shows")
+def sort_questions():
+    order = request.args.get("order")
+    return render_template("list_questions.html", order=order)
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
@@ -69,8 +84,11 @@ def delete_question(question_id: int):
     questions = connection.get_data_from_csv(question_csv_file)
     answer_csv_file = data_manager.answer_file_path
     answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
+    for answer in answers_to_a_question:
+        answer_id = answer["id"]
+        connection.delete_from_csv(csv_file=answer_csv_file, given_id=answer_id, given_list=answers_to_a_question,
+                                   header=data_manager.ANSWER_HEADER)
     connection.delete_from_csv(csv_file=question_csv_file, given_id=question_id, given_list=questions, header=data_manager.QUESTION_HEADER)
-    connection.delete_from_csv(csv_file=answer_csv_file, given_id=question_id, given_list=answers_to_a_question, header=data_manager.ANSWER_HEADER)
     return redirect("/list")
 
 
@@ -120,4 +138,7 @@ def delete_an_answer(answer_id: int):
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(
+        debug=True,
+        port=5000
+    )
