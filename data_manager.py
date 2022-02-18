@@ -18,7 +18,7 @@ def get_answers_to_a_question(question_id):
     answers = connection.get_data_from_csv(answer_file_path)
     answers_to_a_question = []
     for answer in answers:
-        if int(answer["question_id"]) == question_id:
+        if int(answer["question_id"]) == int(question_id):
             answers_to_a_question.append(answer)
     return answers_to_a_question
 

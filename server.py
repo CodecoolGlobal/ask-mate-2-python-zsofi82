@@ -1,5 +1,4 @@
 from http import HTTPStatus
-
 from flask import Flask, render_template, redirect, request, url_for, abort
 import data_manager
 import connection
@@ -47,18 +46,14 @@ def add_question():
     else:
         id_list = data_manager.get_all_ids(questions)
         question_id = int(max(id_list))
-        #  submission_time
-        #  view_number
-        #  vote_number
-        #  image
         return render_template('add_question.html', id=question_id)
 
 
-# Not working yet
-@app.route("/shows")
-def sort_questions():
-    order = request.args.get("order")
-    return render_template("list_questions.html", order=order)
+@app.route("/shows/<order>/<order_by>")
+def sort_questions(order, order_by):
+    questions = connection.get_data_from_csv(data_manager.question_file_path)
+    sorted_questions = sorted(questions, key=lambda h: h[order_by], reverse=(order == "desc"))
+    return render_template("list_questions.html", order=order, questions=sorted_questions, headers=data_manager.QUESTION_HEADER)
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
@@ -84,11 +79,11 @@ def delete_question(question_id: int):
     questions = connection.get_data_from_csv(question_csv_file)
     answer_csv_file = data_manager.answer_file_path
     answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
+    connection.delete_from_csv(csv_file=question_csv_file, given_id=question_id, given_list=questions, header=data_manager.QUESTION_HEADER)
     for answer in answers_to_a_question:
-        answer_id = answer["id"]
+        answer_id = int(answer["id"])
         connection.delete_from_csv(csv_file=answer_csv_file, given_id=answer_id, given_list=answers_to_a_question,
                                    header=data_manager.ANSWER_HEADER)
-    connection.delete_from_csv(csv_file=question_csv_file, given_id=question_id, given_list=questions, header=data_manager.QUESTION_HEADER)
     return redirect("/list")
 
 
@@ -127,14 +122,14 @@ def delete_an_answer(answer_id: int):
     return redirect(f"/question/{question_id}")
 
 
-# @app.route("/question/<int:question_id>/vote")
-# def vote_on_questions():
-#     pass
+@app.route("/question/<int:question_id>/vote")
+def vote_on_questions():
+    pass
 
 
-# @app.route("/answer/<int:answer_id>/vote")
-# def vote_on_answers():
-#     pass
+@app.route("/answer/<int:answer_id>/vote")
+def vote_on_answers():
+    pass
 
 
 if __name__ == "__main__":

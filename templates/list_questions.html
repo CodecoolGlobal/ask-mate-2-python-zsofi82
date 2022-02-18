@@ -13,8 +13,8 @@
                 {% for header in headers %}
                 <th>{{ header }}
                     <br>
-                    <a class="sort_button" href="localhost:5000/shows?order=asc&order={{ header }}"><span style='font-size:10px;'>&#8911;</span></a>
-                    <a class="sort_button" href="localhost:5000/shows?order=desc&order={{ header }}"><span style='font-size:10px;'>&#8910;</span></a>
+                    <a class="sort_button" href="{{url_for("sort_questions", order="asc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8911;</span></a>
+                    <a class="sort_button" href="{{url_for("sort_questions", order="desc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8910;</span></a>
                 </th>
                 {% endfor %}
             </tr>
