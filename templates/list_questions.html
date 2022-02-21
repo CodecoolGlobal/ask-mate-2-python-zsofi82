@@ -6,16 +6,28 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>All questions</h1>
+    <h1>All questions
+    <!-- Need some corrections, not working yet.
+    <select href="{{url_for("sort_questions", order="asc", order_by=header|lower) }}">
+        {% for header in headers[1:6] %}
+        <option>{{ header }}
+        </option>
+        {% endfor %}
+    </select>-->
+    </h1>
     <table>
         <thead>
             <tr>
                 {% for header in headers %}
+                    {% if header in headers[1:6] %}
                 <th>{{ header }}
                     <br>
                     <a class="sort_button" href="{{url_for("sort_questions", order="asc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8911;</span></a>
                     <a class="sort_button" href="{{url_for("sort_questions", order="desc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8910;</span></a>
                 </th>
+                    {% else %}
+                    <th>{{ header }}</th>
+                    {% endif %}
                 {% endfor %}
             </tr>
         </thead>
