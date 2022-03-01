@@ -90,7 +90,7 @@ def post_an_answer(question_id: int):
         if image and connection.allowed_file(image.filename):
             filename = secure_filename(image.filename)
             image.save(os.path.dirname(__file__) + UPLOAD_FOLDER + filename)
-
+        new_answer["image"] = image.filename
         answers.append(new_answer)
         connection.write_data_to_csv(csvfile=answer_csv_file_path, given_list=answers, data_header=data_manager.ANSWER_HEADER)
         return redirect(url_for('display_given_question', question_id=question_id))
@@ -147,8 +147,8 @@ def delete_an_answer(answer_id: int):
     return redirect(f"/question/{question_id}")
 
 
-@app.route("/question/<question_id>/vote_up", methods=["GET","POST"])
-@app.route("/question/<question_id>/vote_down", methods=["GET","POST"])
+@app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
+@app.route("/question/<question_id>/vote_down", methods=["GET", "POST"])
 def vote_on_questions(question_id):
     if request.method == "POST":
         vote = 0
