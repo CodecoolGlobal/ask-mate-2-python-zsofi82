@@ -29,6 +29,8 @@
                     <th>{{ header }}</th>
                     {% endif %}
                 {% endfor %}
+                <th>Vote Up</th>
+                <th>Vote Down</th>
             </tr>
         </thead>
         <tbody>
@@ -41,12 +43,32 @@
                         </td>
                     {% elif value == "image" %}
                         <td><img src="/static/images/{{ value }}" height="45"></td>
+                    {% elif value == "vote_number" %}
+                        <td>{{ value }}</td>
                     {% else %}
                         <td>{{ value }}</td>
-                    {% endif %}
-                {% endfor %}
-                </tr>
-            {% endfor %}
+                        {% endif %}
+                        {% endfor %}
+            
+            <td>
+
+                <form action="/question/{{ question_dict['id'] }}/vote_up" method="post">
+                    <button type="submit" name="vote-up" value="up" class="vote">
+                        <img src="/static/images/upvote.png" alt="up" width="40">
+                    </button>
+                </form>
+            </td>
+            <td>
+
+                <form action="/question/{{ question_dict['id'] }}/vote_down" method="post">
+                    <button type="submit" name="vote-down" value="down" class="vote">
+                        <img src="/static/images/downvote.png" alt="down" width="40">
+                    </button>
+                </form>
+            </td>
+        </tr>
+        
+        {% endfor %}
         </tbody>
     </table>
     <a href="{{ url_for('add_question') }}">

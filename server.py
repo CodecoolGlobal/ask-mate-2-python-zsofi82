@@ -40,6 +40,9 @@ def add_question():
         for key in data_manager.QUESTION_HEADER:
             question[key] = request.form.get(key)
         question["id"] = data_manager.create_new_id(questions)
+        question["vote_number"] = 0
+        question["view_number"] = 0
+        question["submission_time"] = connection.get_time()
         questions.append(question)
         connection.write_data_to_csv(csvfile=question_csv_file, given_list=questions, data_header=data_manager.QUESTION_HEADER)
         return redirect('list')
@@ -121,10 +124,19 @@ def delete_an_answer(answer_id: int):
     connection.delete_from_csv(csv_file=answer_csv_file, given_id=answer_id, given_list=answers, header=data_manager.ANSWER_HEADER)
     return redirect(f"/question/{question_id}")
 
-
-@app.route("/question/<int:question_id>/vote")
-def vote_on_questions():
-    pass
+@app.route("/question/<question_id>/vote_up", methods=["GET","POST"])
+@app.route("/question/<question_id>/vote_down", methods=["GET","POST"])
+def vote_on_questions(question_id):
+    if request.method == "POST":
+        vote = 0
+        if request.form.get("vote-up") == "up":
+            vote = 1
+        elif request.form.get("vote-down") == "down":
+            vote = -1
+            print('hello')
+        question_list = connection.get_data_from_csv(data_manager.QUESTIONS)
+        data_manager.update_count(data_manager.QUESTIONS, question_list, question_id, "vote_number", vote)
+        return redirect("/list")
 
 
 @app.route("/answer/<int:answer_id>/vote")
