@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, abort
+"""from flask import Flask, render_template, request, abort
 from http import HTTPStatus
 
 # [...]
@@ -18,4 +18,4 @@ def question():
             abort(HTTPStatus.METHOD_NOT_ALLOWED)
     # IN CASE OF ANY ERROR, STATUS: 500
     except Exception as e:
-        return render_template('error.html', message=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR
+        return render_template('error.html', message=str(e)), HTTPStatus.INTERNAL_SERVER_ERROR"""

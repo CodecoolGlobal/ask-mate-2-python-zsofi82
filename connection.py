@@ -2,6 +2,7 @@ import csv
 import time
 import data_manager
 import database_common
+#from practice import question
 
 import server
 
@@ -73,3 +74,8 @@ def get_question_list(cursor):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS
+
+@database_common.connection_handler
+def update_question_vote_count(cursor, count, question_id):
+    cursor.execute("""UPDATE question SET vote_number = vote_number + %s WHERE id = %s""",
+                    (count,question_id))

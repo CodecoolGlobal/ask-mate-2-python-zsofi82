@@ -38,10 +38,6 @@ def add_question():
     question_csv_file = data_manager.question_file_path
     questions = connection.get_data_from_csv(question_csv_file)
     if request.method == "POST":
-
-        
-        
-        
         question_id = data_manager.create_new_id(questions)
         id_first= 1
         vote_number= 0
@@ -151,8 +147,7 @@ def vote_on_questions(question_id):
         elif request.form.get("vote-down") == "down":
             vote = -1
             print('hello')
-        question_list = connection.get_data_from_csv(data_manager.QUESTIONS)
-        data_manager.update_count(data_manager.QUESTIONS, question_list, question_id, "vote_number", vote)
+        connection.update_question_vote_count(vote,question_id)
         return redirect("/list")
 
 
