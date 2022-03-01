@@ -8,18 +8,15 @@
 <body>
     <h1>Ask your question here!</h1>
     <form action="{{ url_for('add_question', id=question_id) }}" method="POST">
-        <input type="hidden" id="question_id" name="id" value="{{ question_id }}">
-        <input type="hidden" id="submission_time" name="submission_time" value="none">
-        <input type="hidden" id="view_number" name="view_number" value="none">
-        <input type="hidden" id="vote_number" name="vote_number" value="none">
+        <br>
         <label for="title">Title:</label><br>
         <input name="title" type="text" size="60" required>
         <br><br>
         <label for="message">Details:</label>
         <br>
-        <textarea name="message" rows="4" cols="60" required></textarea>
+        <textarea id="message" name="message" rows="4" cols="60" required></textarea>
         <br><br>
         <input type="hidden" id="image" name="image" value="none">
-        <button type="submit">Post question</button>
+        <button id="Upload" name="submit" type="submit">Post question</button>
     </form>
 </body>

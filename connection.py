@@ -1,6 +1,7 @@
 import csv
 import time
 import data_manager
+import database_common
 
 def get_data_from_csv(csvfile):
     with open(csvfile, "r") as csv_file:
@@ -49,3 +50,19 @@ def update_csv(file_to_rewrite, updated_dict_list):
         writer.writeheader()
         for row in updated_dict_list:
             writer.writerow(row)
+
+@database_common.connection_handler
+def add_question(cursor,new_data):
+    query = f"""
+        INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
+        VALUES('{new_data[0]}','{new_data[1]}','{new_data[2]}','{new_data[3]}','{new_data[4]}','{new_data[5]}')"""
+    cursor.execute(query)
+    return cursor.statusmessage
+
+@database_common.connection_handler
+def get_question_list(cursor):
+    query = """
+        SELECT * FROM question
+        ORDER BY submission_time DESC"""
+    cursor.execute(query)
+    return cursor.fetchall()

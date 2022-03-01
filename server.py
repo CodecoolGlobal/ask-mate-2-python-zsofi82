@@ -14,7 +14,7 @@ def hello():
 @app.route("/list", methods=["GET"])
 def display_questions():
     data_file = data_manager.question_file_path
-    questions = connection.get_data_from_csv(data_file)
+    questions = connection.get_question_list()
     rev_questions = reversed(questions)  # To sort the questions by most recent.
     return render_template("list_questions.html", questions=rev_questions, headers=data_manager.question_headers)
 
@@ -34,17 +34,19 @@ def add_question():
     question_csv_file = data_manager.question_file_path
     questions = connection.get_data_from_csv(question_csv_file)
     if request.method == "POST":
-        question_csv_file = data_manager.question_file_path
-        questions = connection.get_data_from_csv(question_csv_file)
-        question = {}
-        for key in data_manager.QUESTION_HEADER:
-            question[key] = request.form.get(key)
-        question["id"] = data_manager.create_new_id(questions)
-        question["vote_number"] = 0
-        question["view_number"] = 0
-        question["submission_time"] = connection.get_time()
-        questions.append(question)
-        connection.write_data_to_csv(csvfile=question_csv_file, given_list=questions, data_header=data_manager.QUESTION_HEADER)
+        
+        
+        
+        question_id = data_manager.create_new_id(questions)
+        id_first= 1
+        vote_number= 0
+        view_number = 0
+        submission_time = connection.get_time()
+        title = request.form.get('title')
+        message = request.form.get('message')
+        image = request.form.get('image')
+        new_data = [submission_time,view_number,vote_number,title,message,id_first]
+        connection.add_question(new_data)
         return redirect('list')
     else:
         id_list = data_manager.get_all_ids(questions)
