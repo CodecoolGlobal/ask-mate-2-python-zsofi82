@@ -5,16 +5,13 @@
     <title>List questions</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
-    <h1>All questions
-    <!-- Need some corrections, not working yet.
-    <select href="{{url_for("sort_questions", order="asc", order_by=header|lower) }}">
-        {% for header in headers[1:6] %}
-        <option>{{ header }}
-        </option>
-        {% endfor %}
-    </select>-->
-    </h1>
+<body style="text-align:center;">
+    <h1>Hello movie fan</h1>
+    <a href="{{ url_for('add_question') }}">
+        <img src="{{ url_for('static', filename='images/ask_question.png') }}" width=150 title="Click to ask a question">
+    </a>
+    <h2><a class="openPage" href="{{ url_for('add_question') }}" title="Got questions? We got answers!">Shoot your question!</a></h2>
+    <br>
     <table>
         <thead>
             <tr>
@@ -34,7 +31,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for question_dict in questions %}
+            {% for question_dict in selected_questions %}
                 <tr>
                 {% for key,value in question_dict.items() %}
                     {% if key == "title" %}
@@ -68,8 +65,5 @@
         {% endfor %}
         </tbody>
     </table>
-    <a href="{{ url_for('add_question') }}">
-        <img src="{{ url_for('static', filename='images/ask_question.png') }}" width=150 title="Click to ask a question">
-    </a>
 </body>
 </html>

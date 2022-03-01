@@ -15,6 +15,16 @@ def hello():
     return render_template("open_page.html")
 
 
+@app.route("/search", methods=["GET", "POST"])
+def display_searched_questions():
+    if request.method == "GET":
+        question_part = request.args.get('q')
+        selected_questions = data_manager.get_questions_by_word(question_part)
+        return render_template("search.html", selected_questions=selected_questions, headers=data_manager.question_headers)
+    elif request.method == "POST":
+        return redirect("/")
+
+
 @app.route("/list", methods=["GET"])
 def display_questions():
     data_file = data_manager.question_file_path

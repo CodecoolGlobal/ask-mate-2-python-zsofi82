@@ -40,6 +40,7 @@ def delete_from_csv(csv_file, given_id, given_list, header):
     write_data_to_csv(csv_file, new_list, header)
     return new_list
 
+
 def get_time():
     return time.strftime("%F %H:%M:%S", time.localtime())
 
