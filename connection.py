@@ -71,11 +71,31 @@ def get_question_list(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS
-
 @database_common.connection_handler
 def update_question_vote_count(cursor, count, question_id):
     cursor.execute("""UPDATE question SET vote_number = vote_number + %s WHERE id = %s""",
                     (count,question_id))
+
+
+@database_common.connection_handler
+def get_answer_list(cursor):
+    query = """
+            SELECT *
+            FROM answer
+            ORDER BY busmission_time DESC"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def delete_question(cursor, question_id):
+    query = f"""
+            DELETE FROM question
+            WHERE id = {question_id};
+            """
+    cursor.execute(query)
+    print('hello')
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS

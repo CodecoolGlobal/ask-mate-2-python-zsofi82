@@ -89,16 +89,9 @@ def post_an_answer(question_id: int):
 
 
 @app.route("/question/<question_id>/delete")
-def delete_question(question_id: int):
-    question_csv_file = data_manager.question_file_path
-    questions = connection.get_data_from_csv(question_csv_file)
-    answer_csv_file = data_manager.answer_file_path
-    answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
-    connection.delete_from_csv(csv_file=question_csv_file, given_id=question_id, given_list=questions, header=data_manager.QUESTION_HEADER)
-    for answer in answers_to_a_question:
-        answer_id = int(answer["id"])
-        connection.delete_from_csv(csv_file=answer_csv_file, given_id=answer_id, given_list=answers_to_a_question,
-                                   header=data_manager.ANSWER_HEADER)
+def delete_question(question_id):
+    question_list = connection.get_question_list()
+    connection.delete_question(question_id)
     return redirect("/list")
 
 
