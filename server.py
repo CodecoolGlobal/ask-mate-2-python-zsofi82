@@ -124,6 +124,7 @@ def delete_an_answer(answer_id: int):
     connection.delete_from_csv(csv_file=answer_csv_file, given_id=answer_id, given_list=answers, header=data_manager.ANSWER_HEADER)
     return redirect(f"/question/{question_id}")
 
+
 @app.route("/question/<question_id>/vote_up", methods=["GET","POST"])
 @app.route("/question/<question_id>/vote_down", methods=["GET","POST"])
 def vote_on_questions(question_id):

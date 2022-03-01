@@ -2,6 +2,7 @@ import csv
 import time
 import data_manager
 
+
 def get_data_from_csv(csvfile):
     with open(csvfile, "r") as csv_file:
         data = []
