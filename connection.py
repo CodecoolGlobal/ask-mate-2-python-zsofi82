@@ -2,6 +2,8 @@ import csv
 import time
 import data_manager
 
+import server
+
 
 def get_data_from_csv(csvfile):
     with open(csvfile, "r") as csv_file:
@@ -50,3 +52,8 @@ def update_csv(file_to_rewrite, updated_dict_list):
         writer.writeheader()
         for row in updated_dict_list:
             writer.writerow(row)
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS

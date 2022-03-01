@@ -1,7 +1,11 @@
 from http import HTTPStatus
-from flask import Flask, render_template, redirect, request, url_for, abort
+from flask import Flask, render_template, redirect, request, url_for, abort, flash
 import data_manager
 import connection
+import os
+from werkzeug.utils import secure_filename
+UPLOAD_FOLDER = '/static/img/'
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
 app = Flask(__name__)
 
@@ -43,6 +47,15 @@ def add_question():
         question["vote_number"] = 0
         question["view_number"] = 0
         question["submission_time"] = connection.get_time()
+        if 'file' not in request.files:
+            flash('No file part')
+        image = request.files['file']
+        if image.filename == '':
+            flash('No selected file')
+        if image and connection.allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.dirname(__file__) + UPLOAD_FOLDER + filename)
+        question["image"] = image.filename
         questions.append(question)
         connection.write_data_to_csv(csvfile=question_csv_file, given_list=questions, data_header=data_manager.QUESTION_HEADER)
         return redirect('list')
@@ -69,6 +82,15 @@ def post_an_answer(question_id: int):
             new_answer[key] = request.form.get(key)
         new_answer['id'] = data_manager.create_new_id(answers)
         new_answer['question_id'] = question_id
+        if 'file' not in request.files:
+            flash('No file part')
+        image = request.files['file']
+        if image.filename == '':
+            flash('No selected file')
+        if image and connection.allowed_file(image.filename):
+            filename = secure_filename(image.filename)
+            image.save(os.path.dirname(__file__) + UPLOAD_FOLDER + filename)
+
         answers.append(new_answer)
         connection.write_data_to_csv(csvfile=answer_csv_file_path, given_list=answers, data_header=data_manager.ANSWER_HEADER)
         return redirect(url_for('display_given_question', question_id=question_id))

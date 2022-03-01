@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Ask your question here!</h1>
-    <form action="{{ url_for('add_question', id=question_id) }}" method="POST">
+    <form action="{{ url_for('add_question', id=question_id) }}" enctype="multipart/form-data" method="POST">
         <input type="hidden" id="question_id" name="id" value="{{ question_id }}">
         <input type="hidden" id="submission_time" name="submission_time" value="none">
         <input type="hidden" id="view_number" name="view_number" value="none">
@@ -19,7 +19,7 @@
         <br>
         <textarea name="message" rows="4" cols="60" required></textarea>
         <br><br>
-        <input type="hidden" id="image" name="image" value="none">
+        <input type="file" name="file">
         <button type="submit">Post question</button>
     </form>
 </body>

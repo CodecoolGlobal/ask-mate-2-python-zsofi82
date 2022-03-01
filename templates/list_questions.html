@@ -45,11 +45,12 @@
                         <td><img src="/static/images/{{ value }}" height="45"></td>
                     {% elif value == "vote_number" %}
                         <td>{{ value }}</td>
+                        <td><img src="/static/img/{{ value }}" height="45"></td>
                     {% else %}
                         <td>{{ value }}</td>
                         {% endif %}
                         {% endfor %}
-            
+
             <td>
 
                 <form action="/question/{{ question_dict['id'] }}/vote_up" method="post">
@@ -67,7 +68,7 @@
                 </form>
             </td>
         </tr>
-        
+
         {% endfor %}
         </tbody>
     </table>
