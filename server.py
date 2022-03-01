@@ -28,7 +28,7 @@ def display_searched_questions():
 @app.route("/list", methods=["GET"])
 def display_questions():
     data_file = data_manager.question_file_path
-    questions = connection.get_data_from_csv(data_file)
+    questions = connection.get_question_list()
     rev_questions = reversed(questions)  # To sort the questions by most recent.
     return render_template("list_questions.html", questions=rev_questions, headers=data_manager.question_headers)
 
@@ -48,26 +48,16 @@ def add_question():
     question_csv_file = data_manager.question_file_path
     questions = connection.get_data_from_csv(question_csv_file)
     if request.method == "POST":
-        question_csv_file = data_manager.question_file_path
-        questions = connection.get_data_from_csv(question_csv_file)
-        question = {}
-        for key in data_manager.QUESTION_HEADER:
-            question[key] = request.form.get(key)
-        question["id"] = data_manager.create_new_id(questions)
-        question["vote_number"] = 0
-        question["view_number"] = 0
-        question["submission_time"] = connection.get_time()
-        if 'file' not in request.files:
-            flash('No file part')
-        image = request.files['file']
-        if image.filename == '':
-            flash('No selected file')
-        if image and connection.allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image.save(os.path.dirname(__file__) + UPLOAD_FOLDER + filename)
-        question["image"] = image.filename
-        questions.append(question)
-        connection.write_data_to_csv(csvfile=question_csv_file, given_list=questions, data_header=data_manager.QUESTION_HEADER)
+        question_id = data_manager.create_new_id(questions)
+        id_first= 1
+        vote_number= 0
+        view_number = 0
+        submission_time = connection.get_time()
+        title = request.form.get('title')
+        message = request.form.get('message')
+        image = request.form.get('image')
+        new_data = [submission_time,view_number,vote_number,title,message,id_first]
+        connection.add_question(new_data)
         return redirect('list')
     else:
         id_list = data_manager.get_all_ids(questions)
@@ -167,8 +157,7 @@ def vote_on_questions(question_id):
         elif request.form.get("vote-down") == "down":
             vote = -1
             print('hello')
-        question_list = connection.get_data_from_csv(data_manager.QUESTIONS)
-        data_manager.update_count(data_manager.QUESTIONS, question_list, question_id, "vote_number", vote)
+        connection.update_question_vote_count(vote,question_id)
         return redirect("/list")
 
 
