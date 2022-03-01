@@ -58,7 +58,7 @@ def update_csv(file_to_rewrite, updated_dict_list):
 
 
 @database_common.connection_handler
-def add_question(cursor,new_data):
+def add_question(cursor, new_data):
     query = f"""
         INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
         VALUES('{new_data[0]}','{new_data[1]}','{new_data[2]}','{new_data[3]}','{new_data[4]}','{new_data[5]}')"""
@@ -83,4 +83,4 @@ def allowed_file(filename):
 @database_common.connection_handler
 def update_question_vote_count(cursor, count, question_id):
     cursor.execute("""UPDATE question SET vote_number = vote_number + %s WHERE id = %s""",
-                    (count,question_id))
+                    (count, question_id))

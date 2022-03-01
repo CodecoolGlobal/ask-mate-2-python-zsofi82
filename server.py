@@ -27,10 +27,8 @@ def display_searched_questions():
 
 @app.route("/list", methods=["GET"])
 def display_questions():
-    data_file = data_manager.question_file_path
     questions = connection.get_question_list()
-    rev_questions = reversed(questions)  # To sort the questions by most recent.
-    return render_template("list_questions.html", questions=rev_questions, headers=data_manager.question_headers)
+    return render_template("list_questions.html", questions=questions, headers=data_manager.question_headers)
 
 
 @app.route("/question/<int:question_id>", methods=["GET"])
@@ -157,7 +155,7 @@ def vote_on_questions(question_id):
         elif request.form.get("vote-down") == "down":
             vote = -1
             print('hello')
-        connection.update_question_vote_count(vote,question_id)
+        connection.update_question_vote_count(vote, question_id)
         return redirect("/list")
 
 
