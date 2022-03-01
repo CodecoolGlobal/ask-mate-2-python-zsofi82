@@ -3,6 +3,9 @@ import time
 import data_manager
 import database_common
 
+import server
+
+
 def get_data_from_csv(csvfile):
     with open(csvfile, "r") as csv_file:
         data = []
@@ -66,3 +69,7 @@ def get_question_list(cursor):
         ORDER BY submission_time DESC"""
     cursor.execute(query)
     return cursor.fetchall()
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS

@@ -5,4 +5,9 @@ id,submission_time,view_number,vote_number,title,message,image
 4,2022-03-01 00:08:49,0,0,asdasd,asdasd,none
 5,2022-03-01 00:43:07,0,2,asd,asd,none
 6,2022-03-01 00:43:39,0,3,asd,asd fsdfgsdfhfd,none
+<<<<<<< HEAD
 7,2022-03-01 16:33:42,0,0,asd,asd,none
+=======
+7,2022-03-01 11:46:52,0,0,image,image here,1_img.jpg
+8,2022-03-01 13:46:21,0,0,uj,uj,15ba25105957829.5f851d78e1c3a.jpg
+>>>>>>> 56be7190f27cfa7fd379d2861c638967043aa6f6

@@ -15,6 +15,7 @@ answer_headers = ["Id", "Submission time", "Vote number", "Question ID", "Messag
 QUESTIONS = "sample_data/question.csv"
 ANSWERS = "sample_data/answer.csv"
 
+
 def get_answers_to_a_question(question_id):
     answers = connection.get_data_from_csv(answer_file_path)
     answers_to_a_question = []

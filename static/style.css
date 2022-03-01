@@ -75,3 +75,8 @@ th {
 /*tr:hover {
   background-color: dimgrey;
 }*/
+
+.upload {
+  font-weight: bold;
+  font-size: 18px;
+}
