@@ -42,6 +42,7 @@ def delete_from_csv(csv_file, given_id, given_list, header):
     write_data_to_csv(csv_file, new_list, header)
     return new_list
 
+
 def get_time():
     return time.strftime("%F %H:%M:%S", time.localtime())
 
@@ -55,13 +56,15 @@ def update_csv(file_to_rewrite, updated_dict_list):
         for row in updated_dict_list:
             writer.writerow(row)
 
+
 @database_common.connection_handler
-def add_question(cursor,new_data):
+def add_question(cursor, new_data):
     query = f"""
         INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
         VALUES('{new_data[0]}','{new_data[1]}','{new_data[2]}','{new_data[3]}','{new_data[4]}','{new_data[5]}')"""
     cursor.execute(query)
     return cursor.statusmessage
+
 
 @database_common.connection_handler
 def get_question_list(cursor):
@@ -99,3 +102,13 @@ def delete_question(cursor, question_id):
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS
+
+
+@database_common.connection_handler
+def update_question_vote_count(cursor, count, question_id):
+    cursor.execute("""UPDATE question SET vote_number = vote_number + %s WHERE id = %s""",
+                    (count, question_id))

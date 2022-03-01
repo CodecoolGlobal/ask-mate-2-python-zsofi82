@@ -80,3 +80,8 @@ th {
   font-weight: bold;
   font-size: 18px;
 }
+
+#search {
+  margin:auto;
+  max-width:500px
+}

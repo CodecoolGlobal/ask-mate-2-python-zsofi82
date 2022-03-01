@@ -12,6 +12,12 @@
     <br><br>
     <h2><a class="openPage" href="{{ url_for('add_question') }}" title="Got questions? We got answers!">Shoot your question!</a></h2>
     <br>
-
+    <section class="search">
+        <form id="search" action="{{ url_for('display_searched_questions') }}" method="get">
+            <label for="q">Search for questions:</label>
+            <input type="text" name="q" placeholder="Search...">
+            <button type="submit"><i>Submit</i></button>
+        </form>
+    </section>
 </body>
 </html>

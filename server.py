@@ -15,12 +15,20 @@ def hello():
     return render_template("open_page.html")
 
 
+@app.route("/search", methods=["GET", "POST"])
+def display_searched_questions():
+    if request.method == "GET":
+        question_part = request.args.get('q')
+        selected_questions = data_manager.get_questions_by_word(question_part)
+        return render_template("search.html", selected_questions=selected_questions, headers=data_manager.question_headers)
+    elif request.method == "POST":
+        return redirect("/")
+
+
 @app.route("/list", methods=["GET"])
 def display_questions():
-    data_file = data_manager.question_file_path
     questions = connection.get_question_list()
-    rev_questions = reversed(questions)  # To sort the questions by most recent.
-    return render_template("list_questions.html", questions=rev_questions, headers=data_manager.question_headers)
+    return render_template("list_questions.html", questions=questions, headers=data_manager.question_headers)
 
 
 @app.route("/question/<int:question_id>", methods=["GET"])
@@ -140,7 +148,7 @@ def vote_on_questions(question_id):
         elif request.form.get("vote-down") == "down":
             vote = -1
             print('hello')
-        connection.update_question_vote_count(vote,question_id)
+        connection.update_question_vote_count(vote, question_id)
         return redirect("/list")
 
 
