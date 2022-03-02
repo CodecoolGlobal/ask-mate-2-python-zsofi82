@@ -36,7 +36,7 @@ def display_given_question(question_id: int):
     connection.update_view_count(question_id)
     question = connection.get_question_list()
     answer = connection.get_answer_list()
-    return render_template("display_question.html", question_id=question_id, question=question, answers=answer)
+    return render_template("display_question.html", question_id=question_id, question=question, answer=answer)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
