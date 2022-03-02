@@ -48,10 +48,8 @@ def get_time():
 
 
 def update_csv(file_to_rewrite, updated_dict_list):
-    fieldnames=["id", "submission_time", "view_number", "vote_number", "title", "message", "image"]
-
     with open(file_to_rewrite, "w", newline="") as csvfile:
-        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer = csv.DictWriter(csvfile, fieldnames=data_manager.QUESTION_HEADER)
         writer.writeheader()
         for row in updated_dict_list:
             writer.writerow(row)
@@ -74,10 +72,26 @@ def get_question_list(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
+@database_common.connection_handler
+def get_questions_by_word(cursor, word):
+    query = """
+        SELECT DISTINCT question.id, question.submission_time, question.view_number, question.vote_number, question.title, question.message, question.image
+        FROM answer, comment, question
+        WHERE 
+            question.title LIKE %(word)s OR 
+            question.message LIKE %(word)s OR 
+            answer.message LIKE %(word)s OR 
+            comment.message LIKE %(word)s
+        ORDER BY question.vote_number;"""
+    cursor.execute(query, {'word': '%' + str(word) + '%'})
+    return cursor.fetchall()
+
+
 @database_common.connection_handler
 def update_question_vote_count(cursor, count, question_id):
     cursor.execute("""UPDATE question SET vote_number = vote_number + %s WHERE id = %s""",
-                    (count,question_id))
+                    (count, question_id))
 
 
 @database_common.connection_handler
@@ -89,6 +103,7 @@ def get_answer_list(cursor):
     cursor.execute(query)
     return cursor.fetchall()
 
+
 @database_common.connection_handler
 def delete_question(cursor, question_id):
     query = f"""
@@ -98,10 +113,6 @@ def delete_question(cursor, question_id):
     cursor.execute(query)
     print('hello')
 
-
-def allowed_file(filename):
-    return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in server.ALLOWED_EXTENSIONS
 
 def allowed_file(filename):
     return '.' in filename and \

@@ -2,7 +2,6 @@ import os
 import connection
 from datetime import datetime, timedelta
 import time
-import database_common
 
 
 dtime = datetime.now() + timedelta(seconds=3)
@@ -58,20 +57,4 @@ def update_count(filename, list_to_update, selected_id, key, count):
             result[key] = int(result[key])
             result[key] = result[key] + count
             list_to_update.insert(index, result)
-            print(row)
             connection.update_csv(filename, list_to_update)
-
-
-@database_common.connection_handler
-def get_questions_by_word(cursor, word):
-    query = """
-        SELECT DISTINCT question.id, question.submission_time, question.view_number, question.vote_number, question.title, question.message, question.image
-        FROM answer, comment, question
-        WHERE 
-            question.title LIKE %(word)s OR 
-            question.message LIKE %(word)s OR 
-            answer.message LIKE %(word)s OR 
-            comment.message LIKE %(word)s
-        ORDER BY question.vote_number;"""
-    cursor.execute(query, {'word': '%' + str(word) + '%'})
-    return cursor.fetchall()

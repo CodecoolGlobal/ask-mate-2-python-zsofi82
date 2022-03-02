@@ -19,7 +19,7 @@ def hello():
 def display_searched_questions():
     if request.method == "GET":
         question_part = request.args.get('q')
-        selected_questions = data_manager.get_questions_by_word(question_part)
+        selected_questions = connection.get_questions_by_word(question_part)
         return render_template("search.html", selected_questions=selected_questions, headers=data_manager.question_headers)
     elif request.method == "POST":
         return redirect("/")
@@ -98,7 +98,6 @@ def post_an_answer(question_id: int):
 
 @app.route("/question/<question_id>/delete")
 def delete_question(question_id):
-    question_list = connection.get_question_list()
     connection.delete_question(question_id)
     return redirect("/list")
 
