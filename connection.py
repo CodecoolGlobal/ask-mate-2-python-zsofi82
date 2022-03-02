@@ -99,7 +99,7 @@ def get_answer_list(cursor):
     query = """
             SELECT *
             FROM answer
-            ORDER BY busmission_time DESC"""
+            ORDER BY submission_time DESC"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -123,3 +123,10 @@ def allowed_file(filename):
 def update_question_vote_count(cursor, count, question_id):
     cursor.execute("""UPDATE question SET vote_number = vote_number + %s WHERE id = %s""",
                     (count, question_id))
+
+@database_common.connection_handler
+def update_view_count(cursor, question_id):
+    cursor.execute("""UPDATE question
+                    SET view_number = view_number+1
+                    WHERE id = %(question_id)s
+                    """,{'question_id':question_id})
