@@ -74,7 +74,7 @@ def sort_questions(order, order_by):
 def post_an_answer(question_id: int):
     answer_csv_file_path = data_manager.answer_file_path
     answers = connection.get_data_from_csv(answer_csv_file_path)
-    if request.method == "POST":
+    if request.method == "All questionsPOST":
         new_answer = {}
         for key in data_manager.ANSWER_HEADER:
             new_answer[key] = request.form.get(key)

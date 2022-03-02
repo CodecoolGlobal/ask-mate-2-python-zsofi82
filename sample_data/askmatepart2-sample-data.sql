@@ -58,7 +58,7 @@ DROP TABLE IF EXISTS public.tag;
 CREATE TABLE tag (
     id serial NOT NULL,
     name text
-);
+);add-question?id=
 
 
 ALTER TABLE ONLY answer
