@@ -68,7 +68,7 @@ def add_question(cursor, new_data):
 def get_question_list(cursor):
     query = """
         SELECT * FROM question
-        ORDER BY submission_time DESC"""
+        ORDER BY submission_time DESC;"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -81,8 +81,7 @@ def get_questions_by_word(cursor, word):
         WHERE 
             question.title LIKE %(word)s OR 
             question.message LIKE %(word)s OR 
-            answer.message LIKE %(word)s OR 
-            comment.message LIKE %(word)s
+            answer.message LIKE %(word)s
         ORDER BY question.vote_number;"""
     cursor.execute(query, {'word': '%' + str(word) + '%'})
     return cursor.fetchall()
@@ -99,7 +98,7 @@ def get_answer_list(cursor):
     query = """
             SELECT *
             FROM answer
-            ORDER BY busmission_time DESC"""
+            ORDER BY submission_time DESC"""
     cursor.execute(query)
     return cursor.fetchall()
 
@@ -123,3 +122,13 @@ def allowed_file(filename):
 def update_question_vote_count(cursor, count, question_id):
     cursor.execute("""UPDATE question SET vote_number = vote_number + %s WHERE id = %s""",
                     (count, question_id))
+
+
+@database_common.connection_handler
+def sort_questions(cursor, order_by, order):
+    query = """
+        SELECT *
+        FROM question
+        ORDER BY %(order_by)s %(order)s;"""
+    cursor.execute(query, {'order_by': order_by, 'order': order})
+    return cursor.fetchall()

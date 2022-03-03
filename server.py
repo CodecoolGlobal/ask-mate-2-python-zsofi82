@@ -65,9 +65,9 @@ def add_question():
 
 @app.route("/shows/<order>/<order_by>")
 def sort_questions(order, order_by):
-    questions = connection.get_data_from_csv(data_manager.question_file_path)
-    sorted_questions = sorted(questions, key=lambda h: h[order_by], reverse=(order == "desc"))
-    return render_template("list_questions.html", order=order, questions=sorted_questions, headers=data_manager.question_headers)
+    sorted_questions = connection.sort_questions(order_by, order)
+    print(sorted_questions)
+    return render_template("list_questions.html", questions=sorted_questions, headers=data_manager.question_headers)
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])

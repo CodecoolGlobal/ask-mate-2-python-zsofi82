@@ -1,6 +1,7 @@
 body {
   font-family: fantasy;
-  color: midnightblue;
+  color: #1e1e2c;
+  background-color: #e2e2e2;
   /*background-image: url('/static/images/background.png');*/
 }
 
@@ -12,8 +13,13 @@ h2, a {
   display: inline-block;
 }
 
+.open {
+  color: white;
+  background-color: #1e1e2c;
+}
+
 .openPage {
-  background-color: darkred;
+  background-color: #e07a88;
 }
 
 #openPage {
@@ -25,7 +31,7 @@ h2, a {
 }
 
 input[type=submit], .button, button {
-  background-color: darkred;
+  background-color: #e07a88;
   border-radius: 12px;
   color: white;
   padding: 10px 20px;
@@ -38,18 +44,18 @@ input[type=submit], .button, button {
 }
 
 #title {
-  color: dimgrey;
+  color: #7e3bbe;
   text-decoration: underline;
 }
 
 #title:hover {
-  color: darkred;
+  color: #e07a88;
   text-decoration: none;
 }
 
 .sort_button {
   color: white;
-  background: darkred;
+  background: #2b218d;
   padding: 2px;
   border-radius: 12px;
 }
@@ -57,13 +63,14 @@ input[type=submit], .button, button {
 table {
   display: table;
   font-size: 16px;
+  color: #1e1e2c;
   border-collapse: separate;
   border-spacing: 10px;
 }
 
 thead {
   text-transform: uppercase;
-  background-color: dimgrey;
+  background-color: #1e1e2c;
   color: white;
 }
 
@@ -84,4 +91,13 @@ th {
 #search {
   margin:auto;
   max-width:500px
+}
+
+#search_img {
+  position: absolute;
+  horiz-align: left;
+}
+
+.vote {
+  background-color: #1e1e2c;
 }

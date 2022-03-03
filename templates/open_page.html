@@ -5,12 +5,12 @@
     <title>List questions</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body style="text-align:center;">
+<body style="text-align:center;" class="open">
     <h1>Hello movie fan</h1>
     <h3>If you don't remember a movie, share your memories, and the community will try to help you!</h3>
-    <a id="openPage" href="{{ url_for('display_questions') }}"><img src="{{ url_for('static', filename='images/ask_question.png') }}" width=300 title="Jump in the movie crowdsourced Q&A site"></a>
+    <a id="openPage" href="{{ url_for('display_questions') }}"><img src="{{ url_for('static', filename='images/Movieee.ug_logo.png') }}" width=500 title="Jump in the movie crowdsourced Q&A site"></a>
     <br><br>
-    <h2><a class="openPage" href="{{ url_for('add_question') }}" title="Got questions? We got answers!">Shoot your question!</a></h2>
+    <h2><a class="openPage" href="{{ url_for('add_question') }}" title="Got questions? We got answers!">Find your movie!</a></h2>
     <br>
     <section class="search">
         <form id="search" action="{{ url_for('display_searched_questions') }}" method="get">
