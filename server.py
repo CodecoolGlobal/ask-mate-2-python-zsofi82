@@ -70,8 +70,9 @@ def sort_questions(order, order_by):
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id: int):
-    if request.method == 'POST' and request.form["message"]:
-        
+    answers_to_question = []
+    if request.method == 'POST':
+        keys = request.form.keys()
 
         form_data = request.form["message"]
 
@@ -80,7 +81,7 @@ def post_an_answer(question_id: int):
         return redirect(f"/question/{question_id}")
     
     return render_template("post_answer.html", id=question_id)
-    pass
+
 
 
 @app.route("/question/<question_id>/delete")
