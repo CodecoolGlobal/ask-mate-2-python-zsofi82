@@ -12,7 +12,8 @@ app = Flask(__name__)
 
 @app.route("/")
 def hello():
-    return render_template("open_page.html")
+    questions_to_display = connection.display_latest_five_questions()
+    return render_template("open_page.html", questions_to_display=questions_to_display)
 
 
 @app.route("/search", methods=["GET", "POST"])
@@ -77,11 +78,11 @@ def post_an_answer(question_id: int):
             data = request.form.get(key)
             answers_to_question.append(data)
 
-        connection.add_answer(form_data)
+        connection.add_answer(answers_to_question)
 
         return redirect(f"/question/{question_id}")
     
-    return render_template("post_answer.html", id=question_id)
+    return render_template("post_answer.html", question_id=question_id)
 
 
 @app.route("/question/<question_id>/delete")
@@ -115,6 +116,11 @@ def delete_an_answer(answer_id):
     connection.delete_answer(answer_id)
     return render_template("display_question.html", answer_id=answer_id)
 
+
+@app.route("/comment/<int:comment_id>/delete")
+def delete_comment_from_question():
+    connection.delete_a_comment_from_question(comment_id)
+    return render_template()
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
 @app.route("/question/<question_id>/vote_down", methods=["GET", "POST"])

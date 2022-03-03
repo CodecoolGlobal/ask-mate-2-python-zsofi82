@@ -205,3 +205,24 @@ def sort_questions(cursor, order_by, order):
         ORDER BY %(order_by)s %(order)s;"""
     cursor.execute(query, {'order_by': order_by, 'order': order})
     return cursor.fetchall()
+
+
+@database_common.connection_handler
+def display_latest_five_questions(cursor):
+    query = """ SELECT * FROM question ORDER BY submission_time DESC limit 5"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def delete_a_comment_from_question(cursor, comment_id):
+    query = """ DELETE FROM comment WHERE id=%(comment_id)s RETURNING question_id"""
+    cursor.execute(query, {'comment_id': comment_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def delete_a_comment_from_answer(cursor, comment_id):
+    query = """ DELETE FROM comment WHERE id=%(comment_id)s RETURNING answer_id"""
+    cursor.execute(query, {'comment_id': comment_id})
+    return cursor.fetchone()
