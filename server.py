@@ -29,7 +29,8 @@ def display_searched_questions():
 @app.route("/list", methods=["GET"])
 def display_questions():
     questions = connection.get_question_list()
-    return render_template("list_questions.html", questions=questions, headers=data_manager.question_headers)
+    comments = connection.get_comment_list()
+    return render_template("list_questions.html", comments=comments, questions=questions, headers=data_manager.question_headers)
 
 
 @app.route("/question/<int:question_id>")
@@ -37,7 +38,8 @@ def display_given_question(question_id: int):
     connection.update_view_count(question_id)
     question = connection.get_question_by_question_id(question_id)
     answer = connection.get_answer_list_by_question_id(question_id)
-    return render_template("display_question.html", question_id=question_id, question=question, answers=answer)
+    comments = connection.get_comment_list_by_question_id(question_id)
+    return render_template("display_question.html", comments=comments, question_id=question_id, question=question, answers=answer)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -121,9 +123,16 @@ def delete_an_answer(answer_id):
 
 
 @app.route("/comment/<int:comment_id>/delete")
-def delete_comment_from_question():
+def delete_comment_from_question(comment_id):
+    comments = connection.get_comment_list()
+    for key in comments:
+        if str(key['id']) == str(comment_id):
+            question_id = key['question_id']
+
     connection.delete_a_comment_from_question(comment_id)
-    return render_template()
+
+    
+    return redirect(f"/question/{question_id}")
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
 @app.route("/question/<question_id>/vote_down", methods=["GET", "POST"])
@@ -143,7 +152,7 @@ def vote_on_questions(question_id):
 def vote_on_answers():
     pass
 
-@app.route("/question/<question_id>/new-comment", methods=["POST","GET"])
+@app.route("/question/<int:question_id>/new-comment", methods=["POST","GET"])
 def post_comment_to_q(question_id):
     if request.method == 'GET':
         question = connection.get_question_list()
@@ -151,7 +160,7 @@ def post_comment_to_q(question_id):
             if str(row['id']) == str(question_id):
                 this_question = row['title']
                 this_question_id = row['id']
-    
+                
     else:
         question_id = request.form.get('q_id')
         comment = request.form.get('comment')
@@ -160,7 +169,7 @@ def post_comment_to_q(question_id):
         connection.post_comment_to_q(question_id, comment, time)
 
         return redirect(f'/question/{question_id}')
-    return render_template('post_question_comment.html', question=this_question,q_id=this_question_id)
+    return render_template('post_question_comment.html', question_id=question_id,question=this_question,q_id=this_question_id)
 
 
 if __name__ == "__main__":

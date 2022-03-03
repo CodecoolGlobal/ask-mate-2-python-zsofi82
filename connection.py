@@ -61,7 +61,7 @@ def add_question(cursor, new_data):
         INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
         VALUES('{new_data[0]}','{new_data[1]}','{new_data[2]}','{new_data[3]}','{new_data[4]}','{new_data[5]}')"""
     cursor.execute(query)
-    return cursor.statusmessage
+    return cursor.statusmessageget_c
 
 
 @database_common.connection_handler
@@ -245,3 +245,29 @@ def post_comment_to_q(cursor, question_id,message,time):
             INSERT INTO comment (question_id, message, submission_time)
             VALUES ({question_id},'{message}','{time}');"""
     cursor.execute(query)
+
+@database_common.connection_handler
+def get_comment(cursor):
+    query = """
+            SELECT *
+            FROM comment"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_list_by_question_id(cursor, question_id):
+    query = f"""
+            SELECT *
+            FROM comment
+            WHERE question_id = {question_id}"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_list(cursor):
+    query = f"""
+            SELECT *
+            FROM comment
+            """
+    cursor.execute(query)
+    return cursor.fetchall()

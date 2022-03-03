@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<html>
-    <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +7,7 @@
 </head>
 <body>
     <h1>Give your comment!</h1>
-    <form action="question/<question_id>/new-comment" enctype="multipart/form-data"  method="POST">
+    <form action="{{url_for('post_comment_to_q', question_id=question_id)}}" enctype="multipart/form-data"  method="POST">
         <textarea name="comment" rows="4" cols="60"></textarea>
         <br><br>
         <label class="upload">Upload image: </label>
@@ -18,7 +16,5 @@
         <input name="q_id" type="number" value="{{ q_id }}" hidden />
         <button type="submit">Comment</button>
     </form>
-</body>
-</html>
 </body>
 </html>
