@@ -215,7 +215,7 @@ def sort_questions(cursor, order_by, order):
     query = """
         SELECT *
         FROM question
-        ORDER BY %(order_by)s %(order)s;"""
+        ORDER BY %(order_by)s DESC;"""
     cursor.execute(query, {'order_by': order_by, 'order': order})
     return cursor.fetchall()
 

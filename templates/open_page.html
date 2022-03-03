@@ -19,16 +19,19 @@
             <button type="submit"><i>Submit</i></button>
         </form>
     </section>
-    <br>
+    <br><br>
     <table>
-        <tr>
-            <th>Title</th>
-            <th>Message</th>
-        </tr>
+        <thead id="open_page_thead">
+            <tr>
+                <th>Title</th>
+                <th>Message</th>
+            </tr>
+        </thead>
         {% for question in questions_to_display %}
         <tr>
-            <td>{{ question.title }}</td>
-            <td>{{ question.message }}</td>
+            <td class="open_table">
+            <a class="open_title" href="{{ url_for("display_given_question", question_id=question["id"]) }}">{{ question.title }}</a></td>
+            <td class="open_table">{{ question.message }}</td>
         </tr>
         {% endfor %}
     </table>
