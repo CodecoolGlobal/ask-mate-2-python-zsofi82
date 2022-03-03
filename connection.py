@@ -61,7 +61,7 @@ def add_question(cursor, new_data):
         INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
         VALUES('{new_data[0]}','{new_data[1]}','{new_data[2]}','{new_data[3]}','{new_data[4]}','{new_data[5]}')"""
     cursor.execute(query)
-    return cursor.statusmessage
+    return cursor.statusmessageget_c
 
 
 @database_common.connection_handler
@@ -217,4 +217,58 @@ def sort_questions(cursor, order_by, order):
         FROM question
         ORDER BY %(order_by)s %(order)s;"""
     cursor.execute(query, {'order_by': order_by, 'order': order})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def display_latest_five_questions(cursor):
+    query = """ SELECT * FROM question ORDER BY submission_time DESC limit 5"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def delete_a_comment_from_question(cursor, comment_id):
+    query = """ DELETE FROM comment WHERE id=%(comment_id)s RETURNING question_id"""
+    cursor.execute(query, {'comment_id': comment_id})
+    return cursor.fetchone()
+
+
+@database_common.connection_handler
+def delete_a_comment_from_answer(cursor, comment_id):
+    query = """ DELETE FROM comment WHERE id=%(comment_id)s RETURNING answer_id"""
+    cursor.execute(query, {'comment_id': comment_id})
+    return cursor.fetchone()
+
+@database_common.connection_handler
+def post_comment_to_q(cursor, question_id,message,time):
+    query = f"""
+            INSERT INTO comment (question_id, message, submission_time)
+            VALUES ({question_id},'{message}','{time}');"""
+    cursor.execute(query)
+
+@database_common.connection_handler
+def get_comment(cursor):
+    query = """
+            SELECT *
+            FROM comment"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_list_by_question_id(cursor, question_id):
+    query = f"""
+            SELECT *
+            FROM comment
+            WHERE question_id = {question_id}"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+@database_common.connection_handler
+def get_comment_list(cursor):
+    query = f"""
+            SELECT *
+            FROM comment
+            """
+    cursor.execute(query)
     return cursor.fetchall()

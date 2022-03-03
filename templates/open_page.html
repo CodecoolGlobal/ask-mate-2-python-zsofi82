@@ -19,5 +19,18 @@
             <button type="submit"><i>Submit</i></button>
         </form>
     </section>
+    <br>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Message</th>
+        </tr>
+        {% for question in questions_to_display %}
+        <tr>
+            <td>{{ question.title }}</td>
+            <td>{{ question.message }}</td>
+        </tr>
+        {% endfor %}
+    </table>
 </body>
 </html>
