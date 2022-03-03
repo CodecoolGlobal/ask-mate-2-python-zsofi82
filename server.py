@@ -73,15 +73,13 @@ def sort_questions(order, order_by):
 def post_an_answer(question_id: int):
     answers_to_question = []
     if request.method == 'POST':
-        keys = request.form.keys()
-        for key in keys:
-            data = request.form.get(key)
-            answers_to_question.append(data)
-
+        answers_to_question.append(question_id)
+        message = request.form.get("message")
+        answers_to_question.append(message)
+        image = request.form.get("image")
+        answers_to_question.append(image)
         connection.add_answer(answers_to_question)
-
-        return redirect(f"/question/{question_id}")
-    
+        return redirect(url_for("display_given_question", question_id=question_id))
     return render_template("post_answer.html", question_id=question_id)
 
 
@@ -113,8 +111,10 @@ def edit_a_question(question_id):
 
 @app.route("/answer/<int:answer_id>/delete")
 def delete_an_answer(answer_id):
-    connection.delete_answer(answer_id)
-    return render_template("display_question.html", answer_id=answer_id)
+    question_id_dict_list = connection.delete_answer(answer_id)
+    print(question_id_dict_list)
+    question_id = question_id_dict_list['question_id']
+    return redirect(f"/question/{question_id}")
 
 
 @app.route("/comment/<int:comment_id>/delete")
