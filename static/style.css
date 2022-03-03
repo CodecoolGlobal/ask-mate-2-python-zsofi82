@@ -97,3 +97,9 @@ th {
 .vote {
   background-color: #1e1e2c;
 }
+
+#comments {
+  position: relative;
+  margin-left: 600px;
+  margin-top: -300px
+}
