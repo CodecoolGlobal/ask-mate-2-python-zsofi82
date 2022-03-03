@@ -6,11 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body style="text-align:center;">
-    <h1>Hello movie fan</h1>
-    <a href="{{ url_for('add_question') }}">
-        <img src="{{ url_for('static', filename='images/ask_question.png') }}" width=150 title="Click to ask a question">
-    </a>
-    <h2><a class="openPage" href="{{ url_for('add_question') }}" title="Got questions? We got answers!">Shoot your question!</a></h2>
+    <h2><a class="openPage" href="{{ url_for('add_question') }}" title="Got questions? We got answers!">Find your movie!</a></h2>
     <br>
     <table>
         <thead>
@@ -65,5 +61,10 @@
         {% endfor %}
         </tbody>
     </table>
+    <div id="search_img">
+    <a href="{{ url_for('hello') }}">
+        <img src="{{ url_for('static', filename='images/Movieee.ug_logo.png') }}" width=200 title="Click to ask a question">
+    </a>
+        </div>
 </body>
 </html>

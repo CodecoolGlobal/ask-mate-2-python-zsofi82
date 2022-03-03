@@ -31,23 +31,14 @@
     {% endfor %}
         <label for="answers">Answers:</label><br>
         <ol>
-            {% for answer in answers %}{% if key.id == answer_id %}
-                <li><form action="{{ url_for('delete_an_answer', answer_id=answer_id)}}">
-                    {{ answer.id }}
-                    <input type="image" name="image" value="{{ answer.image}}">
+            {% for answer in answers %}
+                <li><form action="{{ url_for('delete_an_answer', answer_id=answer['id'] )}}">
+                    {{ answer["message"] }}
+                    <input type="image" name="image" value="{{ answer['image']}}">
                     <input type=submit value=X id="deleteAnswer">
                 </form></li>
-            
-        </ol>
-         
-         
-        <form action="/question/{{ answer.id }}/new-answer" method="post">
-            
-            <button type="submit" name="update" value="update" class="update">Answer</button>
-            {% endif %}
             {% endfor %}
-        </form>
-        
+            </ol>
         
         
     </body>

@@ -37,7 +37,7 @@ def display_given_question(question_id: int):
     connection.update_view_count(question_id)
     question = connection.get_question_list()
     answer = connection.get_answer_list()
-    return render_template("display_question.html", question_id=question_id, question=question, answer=answer)
+    return render_template("display_question.html", question_id=question_id, question=question, answers=answer)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
@@ -64,9 +64,9 @@ def add_question():
 
 @app.route("/shows/<order>/<order_by>")
 def sort_questions(order, order_by):
-    questions = connection.get_data_from_csv(data_manager.question_file_path)
-    sorted_questions = sorted(questions, key=lambda h: h[order_by], reverse=(order == "desc"))
-    return render_template("list_questions.html", order=order, questions=sorted_questions, headers=data_manager.question_headers)
+    sorted_questions = connection.sort_questions(order_by, order)
+    print(sorted_questions)
+    return render_template("list_questions.html", questions=sorted_questions, headers=data_manager.question_headers)
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
@@ -110,10 +110,10 @@ def edit_a_question(question_id):
         return render_template("update_question.html", question=result)
 
 
-"""@app.route("/answer/<int:answer_id>/delete", method=["GET"])
+@app.route("/answer/<int:answer_id>/delete", method=["GET"])
 def delete_an_answer(answer_id):
     connection.delete_answer(answer_id)
-    return redirect("/display_question")"""
+    return render_template("/display_question", answer_id=answer_id)
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])

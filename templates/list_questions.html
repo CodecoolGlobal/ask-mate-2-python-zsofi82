@@ -52,15 +52,15 @@
                         {% endfor %}
             <td>
                 <form action="/question/{{ question_dict['id'] }}/vote_up" method="post">
-                    <button type="submit" name="vote-up" value="up" class="vote">
-                        <img src="/static/images/upvote.png" alt="up" width="40">
+                    <button class="vote" type="submit" name="vote-up" value="up" class="vote">
+                        <img  class="vote" src="/static/images/upvote.png" alt="up" width="20">
                     </button>
                 </form>
             </td>
             <td>
                 <form action="/question/{{ question_dict['id'] }}/vote_down" method="post">
-                    <button type="submit" name="vote-down" value="down" class="vote">
-                        <img src="/static/images/downvote.png" alt="down" width="40">
+                    <button class="vote" type="submit" name="vote-down" value="down" class="vote">
+                        <img class="vote" src="/static/images/downvote.png" alt="down" width="20">
                     </button>
                 </form>
             </td>
@@ -69,7 +69,7 @@
         </tbody>
     </table>
     <a href="{{ url_for('add_question') }}">
-        <img src="{{ url_for('static', filename='images/ask_question.png') }}" width=150 title="Click to ask a question">
+        <img src="{{ url_for('static', filename='images/Movieee.ug_logo.png') }}" width=200 title="Click to ask a question">
     </a>
 </body>
 </html>
