@@ -104,6 +104,16 @@ def get_answer_list(cursor):
 
 
 @database_common.connection_handler
+def get_answer_list_by_question_id(cursor, question_id):
+    query = """
+            SELECT *
+            FROM answer
+            WHERE question_id = %(question_id)s;"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def delete_question(cursor, question_id):
     query = f"""
             DELETE FROM question
@@ -111,6 +121,15 @@ def delete_question(cursor, question_id):
             """
     cursor.execute(query)
     print('hello')
+
+
+@database_common.connection_handler
+def delete_answer(cursor, answer_id):
+    query = f"""
+            DELETE FROM answer
+            WHERE id = {answer_id};
+            """
+    cursor.execute(query)
 
 
 def allowed_file(filename):
@@ -131,6 +150,7 @@ def update_view_count(cursor, question_id):
                     WHERE id = %(question_id)s
                     """,{'question_id':question_id})
 
+
 @database_common.connection_handler
 def update_question(cursor, title, message, question_id):
     query = f"""
@@ -138,6 +158,7 @@ def update_question(cursor, title, message, question_id):
             SET title = '{title}', message ='{message}'
             WHERE id = {question_id};"""
     cursor.execute(query)
+
 
 @database_common.connection_handler
 def get_answer_id(cursor):
@@ -148,23 +169,25 @@ def get_answer_id(cursor):
     cursor.execute(query)
     for id in cursor.fetchall():
         result=id["id"]
-    resutl += inc_id
+    result += inc_id
     return result
+
 
 @database_common.connection_handler
 def execute_query_string_base(cursor, query_string):
     query = query_string
     cursor.execute(query)
 
+
 @database_common.connection_handler
-def add_answer(cursor,form_data):
+def add_answer(cursor, form_data):
     query = f"""INSERT INTO answer (id, submission_time, vote_number, question_id, message, image)
                     VALUES (DEFAULT,%s,0, %s, %s, %s)
                     RETURNING *"""
-    
-    cursor.execute(query,form_data)
+    cursor.execute(query, form_data)
     return cursor.fetchall()
-    
+
+
 def sort_questions(cursor, order_by, order):
     query = """
         SELECT *

@@ -10,7 +10,6 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 
 
-
 @app.route("/")
 def hello():
     return render_template("open_page.html")
@@ -36,7 +35,7 @@ def display_questions():
 def display_given_question(question_id: int):
     connection.update_view_count(question_id)
     question = connection.get_question_list()
-    answer = connection.get_answer_list()
+    answer = connection.get_answer_list_by_question_id(question_id)
     return render_template("display_question.html", question_id=question_id, question=question, answers=answer)
 
 
@@ -73,15 +72,15 @@ def sort_questions(order, order_by):
 def post_an_answer(question_id: int):
     if request.method == 'POST' and request.form["message"]:
         
-        
+
         form_data = request.form["message"]
-        
 
         connection.add_answer(form_data)
 
         return redirect(f"/question/{question_id}")
     
     return render_template("post_answer.html", id=question_id)
+    pass
 
 
 @app.route("/question/<question_id>/delete")
@@ -110,10 +109,10 @@ def edit_a_question(question_id):
         return render_template("update_question.html", question=result)
 
 
-@app.route("/answer/<int:answer_id>/delete", method=["GET"])
+@app.route("/answer/<int:answer_id>/delete")
 def delete_an_answer(answer_id):
     connection.delete_answer(answer_id)
-    return render_template("/display_question", answer_id=answer_id)
+    return render_template("display_question.html", answer_id=answer_id)
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
