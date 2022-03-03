@@ -104,7 +104,7 @@ def edit_a_question(question_id):
         connection.update_question(q_title, q_message, question_id)
         return redirect(f'/question/{question_id}')
     else:
-        print('yellow')
+        print(result)
         return render_template("update_question.html", question=result)
 
 
