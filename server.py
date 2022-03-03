@@ -110,8 +110,10 @@ def edit_a_question(question_id):
 
 @app.route("/answer/<int:answer_id>/delete")
 def delete_an_answer(answer_id):
-    connection.delete_answer(answer_id)
-    return render_template("display_question.html", answer_id=answer_id)
+    question_id_dict_list = connection.delete_answer(answer_id)
+    print(question_id_dict_list)
+    question_id = question_id_dict_list['question_id']
+    return redirect(f"/question/{question_id}")
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])

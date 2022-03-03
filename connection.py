@@ -114,6 +114,16 @@ def get_answer_list(cursor):
 
 
 @database_common.connection_handler
+def get_question_id_by_answer_id(cursor, answer_id):
+    query = """
+                SELECT question_id
+                FROM answer
+                WHERE id = %(answer_id)s;"""
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_answer_list_by_question_id(cursor, question_id):
     query = """
             SELECT *
@@ -135,11 +145,13 @@ def delete_question(cursor, question_id):
 
 @database_common.connection_handler
 def delete_answer(cursor, answer_id):
-    query = f"""
+    query = """
             DELETE FROM answer
-            WHERE id = {answer_id};
+            WHERE id = %(answer_id)s
+            RETURNING question_id;
             """
-    cursor.execute(query)
+    cursor.execute(query, {'answer_id': answer_id})
+    return cursor.fetchone()
 
 
 def allowed_file(filename):
