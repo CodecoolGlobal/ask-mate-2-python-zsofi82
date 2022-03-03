@@ -21,22 +21,34 @@
         <input type="image" name="image" value="{{ key.image }}" readonly>
         <br><br>
     </form>
-    {% endif %}
-    {% endfor %}
-        <a href="{{ url_for('edit_a_question', question_id=question_id) }}" class="button"><strong>Update question</strong></a>
+    <form action="/question/{{ key.id }}/edit" method="get">
+        <button type="submit" name="update" value="update" class="update">Update question</button>
+    </form>
         <a href="{{ url_for('delete_question', question_id=question_id) }}" class="button"><strong>Delete question</strong></a>
         <a href="{{ url_for('display_questions') }}" class="button"><strong>Back to all questions</strong></a>
         <br><br>
+        {% endif %}
+    {% endfor %}
         <label for="answers">Answers:</label><br>
         <ol>
-            {% for answer in answers %}
-                <li><form action="{{ url_for('delete_an_answer', answer_id=answer["id"])}}">
-                    {{ answer["message"] }}
-                    <input type="image" name="image" value="{{ answer['image']}}">
+            {% for answer in answers %}{% if key.id == answer_id %}
+                <li><form action="{{ url_for('delete_an_answer', answer_id=answer_id)}}">
+                    {{ answer.id }}
+                    <input type="image" name="image" value="{{ answer.image}}">
                     <input type=submit value=X id="deleteAnswer">
                 </form></li>
-            {% endfor %}
+            
         </ol>
-        <a href="{{ url_for('post_an_answer', question_id=question_id) }}" class="button"><strong>Answers</strong></a>
-</body>
+         
+         
+        <form action="/question/{{ answer.id }}/new-answer" method="post">
+            
+            <button type="submit" name="update" value="update" class="update">Answer</button>
+            {% endif %}
+            {% endfor %}
+        </form>
+        
+        
+        
+    </body>
 </html>

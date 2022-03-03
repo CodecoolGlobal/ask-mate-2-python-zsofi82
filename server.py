@@ -10,6 +10,7 @@ ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 app = Flask(__name__)
 
 
+
 @app.route("/")
 def hello():
     return render_template("open_page.html")
@@ -70,28 +71,17 @@ def sort_questions(order, order_by):
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
 def post_an_answer(question_id: int):
-    answer_csv_file_path = data_manager.answer_file_path
-    answers = connection.get_data_from_csv(answer_csv_file_path)
-    if request.method == "All questionsPOST":
-        new_answer = {}
-        for key in data_manager.ANSWER_HEADER:
-            new_answer[key] = request.form.get(key)
-        new_answer['id'] = data_manager.create_new_id(answers)
-        new_answer['question_id'] = question_id
-        if 'file' not in request.files:
-            flash('No file part')
-        image = request.files['file']
-        if image.filename == '':
-            flash('No selected file')
-        if image and connection.allowed_file(image.filename):
-            filename = secure_filename(image.filename)
-            image.save(os.path.dirname(__file__) + UPLOAD_FOLDER + filename)
-        new_answer["image"] = image.filename
-        answers.append(new_answer)
-        connection.write_data_to_csv(csvfile=answer_csv_file_path, given_list=answers, data_header=data_manager.ANSWER_HEADER)
-        return redirect(url_for('display_given_question', question_id=question_id))
-    else:
-        return render_template('post_answer.html', question_id=question_id)
+    if request.method == 'POST' and request.form["message"]:
+        
+        
+        form_data = request.form["message"]
+        
+
+        connection.add_answer(form_data)
+
+        return redirect(f"/question/{question_id}")
+    
+    return render_template("post_answer.html", id=question_id)
 
 
 @app.route("/question/<question_id>/delete")
@@ -100,39 +90,30 @@ def delete_question(question_id):
     return redirect("/list")
 
 
-@app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
-def edit_a_question(question_id: int):
-    question_csv_file = data_manager.question_file_path
-    questions = connection.get_data_from_csv(question_csv_file)
-    updated_question = {}
-    try:
-        if request.method == "GET":
-            for question in questions:
-                if int(question["id"]) == question_id:
-                    return render_template("update_question.html", question_id=question_id, question=question)
-        elif request.method == "POST":
-            for key in data_manager.QUESTION_HEADER:
-                updated_question[key] = request.form.get(key)
-            updated_question["id"] = question_id
-            connection.update_data_in_csv(csvfile=question_csv_file, updated_data=updated_question, given_list=questions, data_header=data_manager.QUESTION_HEADER)
-            return render_template("display_question.html", question_id=question_id, question=updated_question)
-        else:
-            abort(HTTPStatus.METHOD_NOT_ALLOWED)
-            return None
-    except Exception as e:
-        return render_template('error.html', question_id=question_id), HTTPStatus.INTERNAL_SERVER_ERROR
+@app.route("/question/<question_id>/edit", methods=["GET", "POST"])
+def edit_a_question(question_id):
+    question_list = connection.get_question_list()
+    result = {}
+
+    for row in question_list:
+        if row['id'] == question_id:
+            result.update(row)
+    
+    if request.method == 'POST':
+        print('hello')
+        q_title = request.form.get("title")
+        q_message = request.form.get("message")
+        connection.update_question(q_title, q_message, question_id)
+        return redirect(f'/question/{question_id}')
+    else:
+        print('yellow')
+        return render_template("update_question.html", question=result)
 
 
-@app.route("/answer/<int:answer_id>/delete")
-def delete_an_answer(answer_id: int):
-    answer_csv_file = data_manager.answer_file_path
-    answers = connection.get_data_from_csv(answer_csv_file)
-    question_id = 0
-    for answer in answers:
-        if int(answer["id"]) == answer_id:
-            question_id = int(answer["question_id"])
-    connection.delete_from_csv(csv_file=answer_csv_file, given_id=answer_id, given_list=answers, header=data_manager.ANSWER_HEADER)
-    return redirect(f"/question/{question_id}")
+"""@app.route("/answer/<int:answer_id>/delete", method=["GET"])
+def delete_an_answer(answer_id):
+    connection.delete_answer(answer_id)
+    return redirect("/display_question")"""
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])

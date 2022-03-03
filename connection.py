@@ -130,3 +130,38 @@ def update_view_count(cursor, question_id):
                     SET view_number = view_number+1
                     WHERE id = %(question_id)s
                     """,{'question_id':question_id})
+
+@database_common.connection_handler
+def update_question(cursor, title, message, question_id):
+    query = f"""
+            UPDATE question
+            SET title = '{title}', message ='{message}'
+            WHERE id = {question_id};"""
+    cursor.execute(query)
+
+@database_common.connection_handler
+def get_answer_id(cursor):
+    inc_id = 1
+    query = """
+            SELECT id FROM answer
+            ORDER BY id DESC LIMIT 1;"""
+    cursor.execute(query)
+    for id in cursor.fetchall():
+        result=id["id"]
+    resutl += inc_id
+    return result
+
+@database_common.connection_handler
+def execute_query_string_base(cursor, query_string):
+    query = query_string
+    cursor.execute(query)
+
+@database_common.connection_handler
+def add_answer(cursor,form_data):
+    query = f"""INSERT INTO answer (id, submission_time, vote_number, question_id, message, image)
+                    VALUES (DEFAULT,%s,0, %s, %s, %s)
+                    RETURNING *"""
+    
+    cursor.execute(query,form_data)
+    return cursor.fetchall()
+    
