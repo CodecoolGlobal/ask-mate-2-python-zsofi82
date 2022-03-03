@@ -238,3 +238,10 @@ def delete_a_comment_from_answer(cursor, comment_id):
     query = """ DELETE FROM comment WHERE id=%(comment_id)s RETURNING answer_id"""
     cursor.execute(query, {'comment_id': comment_id})
     return cursor.fetchone()
+
+@database_common.connection_handler
+def post_comment_to_q(cursor, question_id,message,time):
+    query = f"""
+            INSERT INTO comment (question_id, message, submission_time)
+            VALUES ({question_id},'{message}','{time}');"""
+    cursor.execute(query)

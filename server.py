@@ -89,14 +89,17 @@ def delete_question(question_id):
     return redirect("/list")
 
 
-@app.route("/question/<question_id>/edit", methods=["GET", "POST"])
+@app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_a_question(question_id):
     question_list = connection.get_question_list()
-    result = {}
 
+    result = {}
     for row in question_list:
+        
         if row['id'] == question_id:
             result.update(row)
+            
+            print(question_id)
     
     if request.method == 'POST':
         print('hello')
@@ -105,11 +108,11 @@ def edit_a_question(question_id):
         connection.update_question(q_title, q_message, question_id)
         return redirect(f'/question/{question_id}')
     else:
-        print('yellow')
+        print(result)
         return render_template("update_question.html", question=result)
 
 
-@app.route("/answer/<int:answer_id>/delete")
+@app.route("/answer/<int:answer_id>/delete") 
 def delete_an_answer(answer_id):
     question_id_dict_list = connection.delete_answer(answer_id)
     print(question_id_dict_list)
@@ -139,6 +142,25 @@ def vote_on_questions(question_id):
 @app.route("/answer/<int:answer_id>/vote")
 def vote_on_answers():
     pass
+
+@app.route("/question/<question_id>/new-comment", methods=["POST","GET"])
+def post_comment_to_q(question_id):
+    if request.method == 'GET':
+        question = connection.get_question_list()
+        for row in question:
+            if str(row['id']) == str(question_id):
+                this_question = row['title']
+                this_question_id = row['id']
+    
+    else:
+        question_id = request.form.get('q_id')
+        comment = request.form.get('comment')
+        time = connection.get_time()
+
+        connection.post_comment_to_q(question_id, comment, time)
+
+        return redirect(f'/question/{question_id}')
+    return render_template('post_question_comment.html', question=this_question,q_id=this_question_id)
 
 
 if __name__ == "__main__":

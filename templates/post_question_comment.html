@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Comment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Give your comment!</h1>
+    <form action="question/<question_id>/new-comment" enctype="multipart/form-data"  method="POST">
+        <textarea name="comment" rows="4" cols="60"></textarea>
+        <br><br>
+        <label class="upload">Upload image: </label>
+        <input type="file" name="file">
+        <br><br>
+        <input name="q_id" type="number" value="{{ q_id }}" hidden />
+        <button type="submit">Comment</button>
+    </form>
+</body>
+</html>
+</body>
+</html>

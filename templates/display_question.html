@@ -39,5 +39,6 @@
             {% endfor %}
         </ol>
         <a href="{{ url_for('post_an_answer', question_id=question_id) }}" class="button"><strong>Answer</strong></a>
+        <a href="{{ url_for('post_comment_to_q', question_id=question_id) }}" class="button"><strong>Comment</strong></a>
 </body>
 </html>
