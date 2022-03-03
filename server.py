@@ -34,7 +34,7 @@ def display_questions():
 @app.route("/question/<int:question_id>")
 def display_given_question(question_id: int):
     connection.update_view_count(question_id)
-    question = connection.get_question_list()
+    question = connection.get_question_by_question_id(question_id)
     answer = connection.get_answer_list_by_question_id(question_id)
     return render_template("display_question.html", question_id=question_id, question=question, answers=answer)
 
@@ -73,15 +73,15 @@ def post_an_answer(question_id: int):
     answers_to_question = []
     if request.method == 'POST':
         keys = request.form.keys()
-
-        form_data = request.form["message"]
+        for key in keys:
+            data = request.form.get(key)
+            answers_to_question.append(data)
 
         connection.add_answer(form_data)
 
         return redirect(f"/question/{question_id}")
     
     return render_template("post_answer.html", id=question_id)
-
 
 
 @app.route("/question/<question_id>/delete")

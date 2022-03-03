@@ -74,6 +74,16 @@ def get_question_list(cursor):
 
 
 @database_common.connection_handler
+def get_question_by_question_id(cursor, question_id):
+    query = """
+            SELECT *
+            FROM question
+            WHERE id = %(question_id)s;"""
+    cursor.execute(query, {'question_id': question_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
 def get_questions_by_word(cursor, word):
     query = """
         SELECT DISTINCT question.id, question.submission_time, question.view_number, question.vote_number, question.title, question.message, question.image
