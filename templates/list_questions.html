@@ -22,8 +22,10 @@
                     {% if header in headers[1:6] %}
                 <th>{{ header }}
                     <br>
-                    <a class="sort_button" href="{{url_for("sort_questions", order="asc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8911;</span></a>
-                    <a class="sort_button" href="{{url_for("sort_questions", order="desc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8910;</span></a>
+                    <a class="sort_button" href="{{ url_for("sort_questions", order_by=header|lower, order='ASC') }}">
+                        <span style='font-size:10px;'>&#8911;</span></a>
+                    <a class="sort_button" href="{{ url_for("sort_questions", order_by=header|lower, order='DESC') }}">
+                        <span style='font-size:10px;'>&#8910;</span></a>
                 </th>
                     {% else %}
                     <th>{{ header }}</th>
@@ -42,7 +44,7 @@
                         <a id="title" href="{{ url_for("display_given_question", question_id=question_dict["id"]) }}">{{ value }}</a>
                         </td>
                     {% elif value == "image" %}
-                        <td><img src="/static/images/{{ value }}" height="45"></td>
+                        <td><img src="{{ url_for('static', filename=question_dict['image']) }}" height="45"></td>
                     {% elif value == "vote_number" %}
                         <td>{{ value }}</td>
                         <td><img src="/static/img/{{ value }}" height="45"></td>

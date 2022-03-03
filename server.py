@@ -1,9 +1,7 @@
-from http import HTTPStatus
 from flask import Flask, render_template, redirect, request, url_for, abort, flash
 import data_manager
 import connection
-import os
-from werkzeug.utils import secure_filename
+
 UPLOAD_FOLDER = '/static/img/'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -29,6 +27,7 @@ def display_searched_questions():
 @app.route("/list", methods=["GET"])
 def display_questions():
     questions = connection.get_question_list()
+
     return render_template("list_questions.html", questions=questions, headers=data_manager.question_headers)
 
 
@@ -42,31 +41,32 @@ def display_given_question(question_id: int):
 
 @app.route("/add-question", methods=["GET", "POST"])
 def add_question():
-    question_csv_file = data_manager.question_file_path
-    questions = connection.get_data_from_csv(question_csv_file)
+    questions = connection.get_question_list()
+    tags = connection.get_all_tags()
     if request.method == "POST":
         question_id = data_manager.create_new_id(questions)
-        id_first= 1
-        vote_number= 0
+        id_first = 1
+        vote_number = 0
         view_number = 0
         submission_time = connection.get_time()
         title = request.form.get('title')
         message = request.form.get('message')
         image = request.form.get('image')
-        new_data = [submission_time,view_number,vote_number,title,message,id_first]
+        new_data = [submission_time, view_number, vote_number, title, message, id_first]
         connection.add_question(new_data)
         return redirect('list')
     else:
         id_list = data_manager.get_all_ids(questions)
         question_id = int(max(id_list))
-        return render_template('add_question.html', id=question_id)
+        return render_template('add_question.html', id=question_id, tags=tags)
 
 
 @app.route("/shows/<order>/<order_by>")
 def sort_questions(order, order_by):
     sorted_questions = connection.sort_questions(order_by, order)
     print(sorted_questions)
-    return render_template("list_questions.html", questions=sorted_questions, headers=data_manager.question_headers)
+    return render_template("list_questions.html", questions=sorted_questions, headers=data_manager.question_headers,
+                           order=order)
 
 
 @app.route("/question/<int:question_id>/new-answer", methods=["GET", "POST"])
@@ -92,7 +92,7 @@ def delete_question(question_id):
 @app.route("/question/<question_id>/edit", methods=["GET", "POST"])
 def edit_a_question(question_id):
     question_list = connection.get_question_list()
-    result = {}
+    result = connection.get_question_by_question_id(question_id)
 
     for row in question_list:
         if row['id'] == question_id:
@@ -105,7 +105,7 @@ def edit_a_question(question_id):
         connection.update_question(q_title, q_message, question_id)
         return redirect(f'/question/{question_id}')
     else:
-        print('yellow')
+        print(result)
         return render_template("update_question.html", question=result)
 
 
@@ -118,9 +118,10 @@ def delete_an_answer(answer_id):
 
 
 @app.route("/comment/<int:comment_id>/delete")
-def delete_comment_from_question():
+def delete_comment_from_question(comment_id):
     connection.delete_a_comment_from_question(comment_id)
-    return render_template()
+    return redirect('/question/')
+
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
 @app.route("/question/<question_id>/vote_down", methods=["GET", "POST"])
@@ -134,6 +135,12 @@ def vote_on_questions(question_id):
             print('hello')
         connection.update_question_vote_count(vote, question_id)
         return redirect("/list")
+
+
+@app.route('/tag-name/questions')
+def list_tagged_questions(tag_name):
+    tag = connection.get_all_tags(tag_name)
+
 
 
 @app.route("/answer/<int:answer_id>/vote")

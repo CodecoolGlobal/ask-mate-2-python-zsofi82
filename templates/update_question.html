@@ -9,11 +9,11 @@
 <body>
     <h1>Update this question!</h1>
     <a href="/list"><button>Back to Home Page</button></a>
-    <a href="/question/{{ question['id'] }}"><button>Back to the question</button></a>
+    <a href="/question/{{ question["id"] }}"><button>Back to the question</button></a>
     <form action="" method="POST">
         <label for="title">Title:</label><br>
         
-        <input name="title" type="text" size="60" value="{{ question['title'] }}" required>
+        <input name="title" type="text" size="60" value="{{ question["title"] }}" required>
         <br><br>
         
         <label for="message">Details:</label>
