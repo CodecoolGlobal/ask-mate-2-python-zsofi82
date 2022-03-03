@@ -18,9 +18,9 @@ def hello():
 @app.route("/search", methods=["GET", "POST"])
 def display_searched_questions():
     if request.method == "GET":
-        question_part = request.args.get('q')
-        selected_questions = connection.get_questions_by_word(question_part)
-        return render_template("search.html", selected_questions=selected_questions, headers=data_manager.question_headers)
+        searched_word = request.args.get('q')
+        selected_questions = connection.get_questions_by_word(searched_word)
+        return render_template("search.html", selected_questions=selected_questions, headers=data_manager.search_headers, searched_word=searched_word)
     elif request.method == "POST":
         return redirect("/")
 
@@ -92,26 +92,21 @@ def delete_question(question_id):
 def edit_a_question(question_id):
     question_list = connection.get_question_list()
     result = {}
-
     for row in question_list:
         if row['id'] == question_id:
             result.update(row)
-    
     if request.method == 'POST':
-        print('hello')
         q_title = request.form.get("title")
         q_message = request.form.get("message")
         connection.update_question(q_title, q_message, question_id)
         return redirect(f'/question/{question_id}')
     else:
-        print('yellow')
         return render_template("update_question.html", question=result)
 
 
 @app.route("/answer/<int:answer_id>/delete")
 def delete_an_answer(answer_id):
     question_id_dict_list = connection.delete_answer(answer_id)
-    print(question_id_dict_list)
     question_id = question_id_dict_list['question_id']
     return redirect(f"/question/{question_id}")
 

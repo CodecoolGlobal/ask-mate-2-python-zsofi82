@@ -13,6 +13,7 @@ question_headers = ["Id", "Submission time", "View number", "Vote number", "Titl
 answer_file_path = os.getenv('answer_file_path') if 'answer_file_path' in os.environ else os.path.dirname(os.path.abspath(__file__))+'/sample_data/answer.csv'
 ANSWER_HEADER = ["id", "submission_time", "vote_number", "question_id", "message", "image"]
 answer_headers = ["Id", "Submission time", "Vote number", "Question ID", "Message", "Image"]
+search_headers = ["Id", "Submission time", "View number", "Vote number", "Title", "Message", "Image", "Answers"]
 QUESTIONS = "sample_data/question.csv"
 ANSWERS = "sample_data/answer.csv"
 
