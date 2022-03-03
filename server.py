@@ -72,16 +72,14 @@ def sort_questions(order, order_by):
 def post_an_answer(question_id: int):
     answers_to_question = []
     if request.method == 'POST':
-        keys = request.form.keys()
-        for key in keys:
-            data = request.form.get(key)
-            answers_to_question.append(data)
-
-        connection.add_answer(form_data)
-
-        return redirect(f"/question/{question_id}")
-    
-    return render_template("post_answer.html", id=question_id)
+        answers_to_question.append(question_id)
+        message = request.form.get("message")
+        answers_to_question.append(message)
+        image = request.form.get("image")
+        answers_to_question.append(image)
+        connection.add_answer(answers_to_question)
+        return redirect(url_for("display_given_question", question_id=question_id))
+    return render_template("post_answer.html", question_id=question_id)
 
 
 @app.route("/question/<question_id>/delete")

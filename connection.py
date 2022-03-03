@@ -192,7 +192,7 @@ def execute_query_string_base(cursor, query_string):
 @database_common.connection_handler
 def add_answer(cursor, form_data):
     query = f"""INSERT INTO answer (id, submission_time, vote_number, question_id, message, image)
-                    VALUES (DEFAULT,%s,0, %s, %s, %s)
+                    VALUES (DEFAULT,DEFAULT,0, %s, %s, %s)
                     RETURNING *"""
     cursor.execute(query, form_data)
     return cursor.fetchall()
