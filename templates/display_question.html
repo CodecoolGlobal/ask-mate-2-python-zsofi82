@@ -7,19 +7,22 @@
 </head>
 <body>
     <h1>Your selected question</h1>
+    {% for key in question %}{% if key.id == question_id %}
     <form id="questions" action="{{ url_for('display_given_question', question_id=question_id) }}" method="POST">
         <label for="title">Title:</label><br>
-        <input name="title" type="text" size="60" value="{{ question['title']}}" readonly>
+        <input name="title" type="text" size="60" value="{{ key.title }}" readonly>
         <br><br>
         <label for="message">Details:</label>
         <br>
-        <textarea name="message" rows="4" cols="60" readonly>{{ question['message']}}</textarea>
+        <textarea name="message" rows="4" cols="60" readonly>{{ key.message}}</textarea>
         <br>
         <label for="image">Images:</label>
         <br>
-        <input type="image" name="image" value="{{ question['image']}}" readonly>
+        <input type="image" name="image" value="{{ key.image }}" readonly>
         <br><br>
     </form>
+    {% endif %}
+    {% endfor %}
         <a href="{{ url_for('edit_a_question', question_id=question_id) }}" class="button"><strong>Update question</strong></a>
         <a href="{{ url_for('delete_question', question_id=question_id) }}" class="button"><strong>Delete question</strong></a>
         <a href="{{ url_for('display_questions') }}" class="button"><strong>Back to all questions</strong></a>
@@ -34,6 +37,6 @@
                 </form></li>
             {% endfor %}
         </ol>
-        <a href="{{ url_for('post_an_answer', question_id=question_id) }}" class="button"><strong>Comment</strong></a>
+        <a href="{{ url_for('post_an_answer', question_id=question_id) }}" class="button"><strong>Answers</strong></a>
 </body>
 </html>

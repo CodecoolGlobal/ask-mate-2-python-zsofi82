@@ -31,14 +31,12 @@ def display_questions():
     return render_template("list_questions.html", questions=questions, headers=data_manager.question_headers)
 
 
-@app.route("/question/<int:question_id>", methods=["GET"])
+@app.route("/question/<int:question_id>")
 def display_given_question(question_id: int):
-    if request.method == "GET":
-        question_to_display = data_manager.get_a_question(question_id)
-        answers_to_a_question = data_manager.get_answers_to_a_question(question_id)
-        return render_template("display_question.html", question_id=question_id, question=question_to_display, answers=answers_to_a_question)
-    else:
-        return redirect("/list")
+    connection.update_view_count(question_id)
+    question = connection.get_question_list()
+    answer = connection.get_answer_list()
+    return render_template("display_question.html", question_id=question_id, question=question, answer=answer)
 
 
 @app.route("/add-question", methods=["GET", "POST"])
