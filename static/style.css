@@ -121,7 +121,7 @@ th {
 }
 
 #comments {
-  position: relative;
-  margin-left: 600px;
-  margin-top: -300px
+  position: absolute;
+  left: 580px;
+  top: 175px;
 }

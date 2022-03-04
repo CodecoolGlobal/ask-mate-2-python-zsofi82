@@ -7,7 +7,6 @@
 </head>
 <body>
     <h1>Your selected question</h1>
-    <a class="back-to-main" href="{{ url_for('hello') }}"><button>Back to main page</button></a>
     <div id="questions">
         {% for value in question %}
         <label for="title">Title:</label><br>
