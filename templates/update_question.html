@@ -12,19 +12,15 @@
     <a href="/question/{{ question["id"] }}"><button>Back to the question</button></a>
     <form action="" method="POST">
         <label for="title">Title:</label><br>
-        
-        <input name="title" type="text" size="60" value="{{ question["title"] }}" required>
+
+        <input name="title" type="text" size="60" value="{{ question['title'] }}" required>
         <br><br>
-        
+
         <label for="message">Details:</label>
         <br>
         <textarea name="message" rows="4" cols="60" required>{{ question['message'] }}</textarea>
         <br><br>
-        
+
         <button type="submit" value="Update User Story">Update</button>
-        
-        
-        
-    </form>
 </body>
 </html>

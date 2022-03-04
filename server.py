@@ -19,9 +19,9 @@ def hello():
 @app.route("/search", methods=["GET", "POST"])
 def display_searched_questions():
     if request.method == "GET":
-        question_part = request.args.get('q')
-        selected_questions = connection.get_questions_by_word(question_part)
-        return render_template("search.html", selected_questions=selected_questions, headers=data_manager.question_headers)
+        searched_word = request.args.get('q')
+        selected_questions = connection.get_questions_by_word(searched_word)
+        return render_template("search.html", selected_questions=selected_questions, headers=data_manager.search_headers, searched_word=searched_word)
     elif request.method == "POST":
         return redirect("/")
 
@@ -59,12 +59,9 @@ def add_question():
         connection.add_question(new_data)
         return redirect('list')
     else:
-        print(tags)
         tag_names = []
         for tag in tags:
-            print(tag)
             tag_names.append(tag['name'])
-        print(tag_names)
         id_list = data_manager.get_all_ids(questions)
         question_id = int(max(id_list))
         return render_template('add_question.html', id=question_id, tags=tag_names)
@@ -73,7 +70,6 @@ def add_question():
 @app.route("/shows/<order>/<order_by>")
 def sort_questions(order, order_by):
     sorted_questions = connection.sort_questions(order_by, order)
-    print(sorted_questions)
     return render_template("list_questions.html", questions=sorted_questions, headers=data_manager.question_headers)
 
 
@@ -105,20 +101,17 @@ def edit_a_question(question_id):
         if row['id'] == question_id:
             connection.update_question(row["title"], row["message"], row["id"])
     if request.method == 'POST':
-        print('hello')
         q_title = request.form.get("title")
         q_message = request.form.get("message")
         connection.update_question(q_title, q_message, question_id)
         return redirect(f'/question/{question_id}')
     else:
-        print(result)
         return render_template("update_question.html", question=result)
 
 
-@app.route("/answer/<int:answer_id>/delete")
+@app.route("/answer/<int:answer_id>/delete") 
 def delete_an_answer(answer_id):
     question_id_dict_list = connection.delete_answer(answer_id)
-    print(question_id_dict_list)
     question_id = question_id_dict_list['question_id']
     return redirect(f"/question/{question_id}")
 
@@ -131,6 +124,8 @@ def delete_comment_from_question(comment_id):
             question_id = key['question_id']
     connection.delete_a_comment_from_question(comment_id)
     return redirect(f"/question/{question_id}")
+
+
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
 @app.route("/question/<question_id>/vote_down", methods=["GET", "POST"])
@@ -165,6 +160,7 @@ def display_current_tags():
 @app.route("/answer/<int:answer_id>/vote")
 def vote_on_answers():
     pass
+
 
 @app.route("/question/<int:question_id>/new-comment", methods=["POST","GET"])
 def post_comment_to_q(question_id):

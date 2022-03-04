@@ -79,9 +79,26 @@ th {
   padding: 5px 10px;
 }
 
-/*tr:hover {
-  background-color: dimgrey;
-}*/
+#open_page_thead {
+    text-transform: uppercase;
+    background-color: white;
+    color: #1e1e2c;
+}
+
+.open_table {
+    background-color: #1e1e2c;
+    color: white;
+}
+
+.open_title {
+    color: #e07a88;
+    text-decoration: underline;
+}
+
+#open_title:hover {
+  color: #7e3bbe;
+  text-decoration: none;
+}
 
 .upload {
   font-weight: bold;
@@ -90,7 +107,8 @@ th {
 
 #search {
   margin:auto;
-  max-width:500px
+  max-width:500px;
+  font-size: large;
 }
 
 #search_img {
@@ -100,4 +118,10 @@ th {
 
 .vote {
   background-color: #1e1e2c;
+}
+
+#comments {
+  position: relative;
+  margin-left: 600px;
+  margin-top: -300px
 }

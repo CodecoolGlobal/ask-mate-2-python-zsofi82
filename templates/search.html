@@ -12,59 +12,33 @@
         <thead>
             <tr>
                 {% for header in headers %}
-                    {% if header in headers[1:6] %}
-                <th>{{ header }}
-                    <br>
-                    <a class="sort_button" href="{{url_for("sort_questions", order="asc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8911;</span></a>
-                    <a class="sort_button" href="{{url_for("sort_questions", order="desc", order_by=header|lower) }}"><span style='font-size:10px;'>&#8910;</span></a>
-                </th>
-                    {% else %}
                     <th>{{ header }}</th>
-                    {% endif %}
                 {% endfor %}
-                <th>Vote Up</th>
-                <th>Vote Down</th>
             </tr>
         </thead>
         <tbody>
             {% for question_dict in selected_questions %}
                 <tr>
                 {% for key,value in question_dict.items() %}
+                    <!--{% if searched_word in question_dict["title"] or searched_word in question_dict["q_message"] or searched_word in question_dict["a_message"] %}
+                        {{ searched_word }} = <strong>{{ searched_word }}</strong>
+                    {% endif %}-->
                     {% if key == "title" %}
-                        <td>
-                        <a id="title" href="{{ url_for("display_given_question", question_id=question_dict["id"]) }}">{{ value }}</a>
-                        </td>
+                        <td><a id="title" href="{{ url_for("display_given_question", question_id=question_dict["id"]) }}">{{ value }}</a></td>
                     {% elif value == "image" %}
                         <td><img src="/static/images/{{ value }}" height="45"></td>
-                    {% elif value == "vote_number" %}
-                        <td>{{ value }}</td>
-                        <td><img src="/static/img/{{ value }}" height="45"></td>
                     {% else %}
                         <td>{{ value }}</td>
-                        {% endif %}
-                        {% endfor %}
-            <td>
-                <form action="/question/{{ question_dict['id'] }}/vote_up" method="post">
-                    <button type="submit" name="vote-up" value="up" class="vote">
-                        <img src="/static/images/upvote.png" alt="up" width="40">
-                    </button>
-                </form>
-            </td>
-            <td>
-                <form action="/question/{{ question_dict['id'] }}/vote_down" method="post">
-                    <button type="submit" name="vote-down" value="down" class="vote">
-                        <img src="/static/images/downvote.png" alt="down" width="40">
-                    </button>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% endfor %}
         </tbody>
     </table>
     <div id="search_img">
     <a href="{{ url_for('hello') }}">
         <img src="{{ url_for('static', filename='images/Movieee.ug_logo.png') }}" width=200 title="Click to ask a question">
     </a>
-        </div>
+    </div>
 </body>
 </html>
