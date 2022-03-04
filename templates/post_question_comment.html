@@ -6,15 +6,15 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Shoot your solution!</h1>
-    <form action="{{url_for('post_an_answer', question_id=question_id)}}" enctype="multipart/form-data"  method="POST">
-        <textarea name="message" rows="4" cols="60"></textarea>
+    <h1>Give your comment!</h1>
+    <form action="{{url_for('post_comment_to_q', question_id=question_id)}}" enctype="multipart/form-data"  method="POST">
+        <textarea name="comment" rows="4" cols="60"></textarea>
         <br><br>
         <label class="upload">Upload image: </label>
         <input type="file" name="file">
         <br><br>
         <input name="q_id" type="number" value="{{ q_id }}" hidden />
-        <button type="submit">Shoot</button>
+        <button type="submit">Comment</button>
     </form>
 </body>
 </html>

@@ -198,8 +198,22 @@ def delete_a_comment_from_answer(cursor, comment_id):
 
 @database_common.connection_handler
 def get_all_tags(cursor):
-    query = """SELECT * FROM tag"""
+    query = """SELECT name FROM tag ORDER BY name"""
     cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_tagged_question_ids(cursor, tag_id):
+    query = """SELECT question_id FROM question_tag WHERE tag_id=%(tag_id)s"""
+    cursor.execute(query, {'tag_id': tag_id})
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_tagged_questions(cursor, tagged_id):
+    query = """SELECT * FROM question WHERE id=%(tagged_id)s"""
+    cursor.execute(query, {'tagged_id': tagged_id})
     return cursor.fetchall()
 
 
@@ -222,3 +236,40 @@ def get_image_path(cursor, question_id):
     query = """SELECT image FROM question WHERE id=%(question_id)s"""
     cursor.execute(query, {'question_id': question_id})
     return cursor.fetchone()
+
+
+@database_common.connection_handler
+def post_comment_to_q(cursor, question_id, message, sm_time):
+    query = f"""
+            INSERT INTO comment (question_id, message, submission_time)
+            VALUES ({question_id},'{message}','{sm_time}');"""
+    cursor.execute(query)
+
+
+@database_common.connection_handler
+def get_comment(cursor):
+    query = """
+            SELECT *
+            FROM comment"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_comment_list_by_question_id(cursor, question_id):
+    query = f"""
+            SELECT *
+            FROM comment
+            WHERE question_id = {question_id}"""
+    cursor.execute(query)
+    return cursor.fetchall()
+
+
+@database_common.connection_handler
+def get_comment_list(cursor):
+    query = f"""
+            SELECT *
+            FROM comment
+            """
+    cursor.execute(query)
+    return cursor.fetchall()

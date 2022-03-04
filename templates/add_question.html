@@ -10,15 +10,21 @@
     <form action="{{ url_for('add_question', id=question_id) }}" method="POST">
         <br>
         <label for="title">Title:</label><br>
-        <input name="title" type="text" size="60" required>
+        <input name="title" id="title" type="text" size="60" required>
         <br><br>
         <label for="message">Details:</label>
         <br>
         <textarea id="message" name="message" rows="4" cols="60" required></textarea>
         <br><br>
         <input type="hidden" id="image" name="image" value="none">
-        <label class="upload">Upload image: </label>
+        <label class="upload" for="image">Upload image: </label>
         <input type="file" name="file">
+        <br><br>
+        <p>
+        {% for tag in tags %}
+            <label for="{{ tag }}">{{ tag }}<input type="checkbox" name="tag_box" id="{{ tag }}" value="{{ tag }}"></label>
+        {% endfor %}
+        </p>
         <br><br>
         <button id="upload" name="submit" type="submit">Post question</button>
     </form>
