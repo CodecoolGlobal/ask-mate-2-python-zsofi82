@@ -61,7 +61,7 @@ def add_question(cursor, new_data):
         INSERT INTO question (submission_time,view_number,vote_number,title,message,image)
         VALUES('{new_data[0]}','{new_data[1]}','{new_data[2]}','{new_data[3]}','{new_data[4]}','{new_data[5]}')"""
     cursor.execute(query)
-    return cursor.statusmessageget_c
+    return cursor.statusmessage
 
 
 @database_common.connection_handler
@@ -86,14 +86,13 @@ def get_question_by_question_id(cursor, question_id):
 @database_common.connection_handler
 def get_questions_by_word(cursor, word):
     query = """
-        SELECT DISTINCT question.id, question.submission_time, question.view_number, question.vote_number, question.title, question.message AS q_message, question.image, answer.message AS a_message
-        FROM question  
-        LEFT JOIN answer
-        ON question.id = answer.question_id
-        WHERE
-            question.title LIKE %(word)s OR
-            question.message LIKE %(word)s OR
-            answer.message LIKE %(word)s;"""
+        SELECT DISTINCT question.id, question.submission_time, question.view_number, question.vote_number, question.title, question.message, question.image
+        FROM answer, comment, question
+        WHERE 
+            question.title LIKE %(word)s OR 
+            question.message LIKE %(word)s OR 
+            answer.message LIKE %(word)s
+        ORDER BY question.vote_number;"""
     cursor.execute(query, {'word': '%' + str(word) + '%'})
     return cursor.fetchall()
 
@@ -141,7 +140,7 @@ def delete_question(cursor, question_id):
             WHERE id = {question_id};
             """
     cursor.execute(query)
-    print('hello')
+    
 
 
 @database_common.connection_handler
@@ -272,3 +271,24 @@ def get_comment_list(cursor):
             """
     cursor.execute(query)
     return cursor.fetchall()
+
+@database_common.connection_handler
+def delete_a_comment_of_question(cursor,question_id):
+    query = f"""
+            DELETE FROM comment
+            WHERE question_id = {question_id};"""
+    cursor.execute(query)
+
+@database_common.connection_handler
+def delete_question_tag_of_question(cursor,question_id):
+    query = f"""
+            DELETE FROM question_tag
+            WHERE question_id = {question_id};"""
+    cursor.execute(query)
+
+@database_common.connection_handler
+def delete_an_answer_of_question(cursor,question_id):
+    query = f"""
+            DELETE FROM answer
+            WHERE question_id = {question_id};"""
+    cursor.execute(query)
