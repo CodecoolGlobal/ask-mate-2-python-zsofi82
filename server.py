@@ -95,18 +95,19 @@ def delete_question(question_id):
 
 @app.route("/question/<int:question_id>/edit", methods=["GET", "POST"])
 def edit_a_question(question_id):
-    question_list = connection.get_question_list()
     result = connection.get_question_by_question_id(question_id)
-    for row in question_list:
-        if row['id'] == question_id:
-            connection.update_question(row["title"], row["message"], row["id"])
+    question_data = {}
     if request.method == 'POST':
         q_title = request.form.get("title")
         q_message = request.form.get("message")
         connection.update_question(q_title, q_message, question_id)
         return redirect(f'/question/{question_id}')
     else:
-        return render_template("update_question.html", question=result)
+        question_data['id'] = result[0]['id']
+        question_data['title'] = result[0]['title']
+        question_data['message'] = result[0]['message']
+        print(question_data)
+        return render_template("update_question.html", question=question_data)
 
 
 @app.route("/answer/<int:answer_id>/delete") 
@@ -124,7 +125,6 @@ def delete_comment_from_question(comment_id):
             question_id = key['question_id']
     connection.delete_a_comment_from_question(comment_id)
     return redirect(f"/question/{question_id}")
-
 
 
 @app.route("/question/<question_id>/vote_up", methods=["GET", "POST"])
