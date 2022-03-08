@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Ask your question here!</h1>
-    <form action="{{ url_for('add_question', id=question_id) }}" method="POST">
+    <form action="{{ url_for('add_question', id=question_id) }}" enctype="multipart/form-data" method="POST">
         <br>
         <label for="title">Title:</label><br>
         <input name="title" id="title" type="text" size="60" required>
@@ -16,8 +16,7 @@
         <br>
         <textarea id="message" name="message" rows="4" cols="60" required></textarea>
         <br><br>
-        <input type="hidden" id="image" name="image" value="none">
-        <label class="upload" for="image">Upload image: </label>
+        <label class="upload" for="file">Upload image: </label>
         <input type="file" name="file">
         <br><br>
         <p>

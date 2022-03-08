@@ -88,6 +88,8 @@ th {
 .open_table {
     background-color: #1e1e2c;
     color: white;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .open_title {
@@ -123,5 +125,5 @@ th {
 #comments {
   position: absolute;
   left: 580px;
-  top: 175px;
+  top: 160px;
 }

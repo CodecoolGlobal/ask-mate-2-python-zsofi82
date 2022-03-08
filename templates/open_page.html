@@ -11,7 +11,6 @@
     <a id="openPage" href="{{ url_for('display_questions') }}"><img src="{{ url_for('static', filename='images/Movieee.ug_logo.png') }}" width=500 title="Jump in the movie crowdsourced Q&A site"></a>
     <br><br>
     <h2><a class="openPage" href="{{ url_for('add_question') }}" title="Got questions? We got answers!">Find your movie!</a></h2>
-    <br>
     <section class="search">
         <form id="search" action="{{ url_for('display_searched_questions') }}" method="get">
             <label for="q">Search for questions:</label>
@@ -19,8 +18,8 @@
             <button type="submit"><i>Submit</i></button>
         </form>
     </section>
-    <br><br>
-    <table>
+    <br><br><br><br>
+    <table class="open_table">
         <thead id="open_page_thead">
             <tr>
                 <th>Title</th>
